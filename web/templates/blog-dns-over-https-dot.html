@@ -1,0 +1,55 @@
+{{define "content"}}
+<div class="container">
+  <div class="blog-article">
+    <a href="/blog" class="back-link">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L4 6l4 4"/></svg>
+      All posts
+    </a>
+    <div class="blog-tag" style="margin-top:20px">Networking</div>
+    <h1>A Deep Dive into DNS over HTTPS (DoH) and DoT</h1>
+    <div class="meta"><span>August 15, 2026</span><span>5 min read</span></div>
+    <h2>A Deep Dive into DNS over HTTPS (DoH) and DoT</h2>
+<p>When it comes to internet communication, Domain Name System (DNS) plays a crucial role in resolving domain names to IP addresses. However, traditional DNS is vulnerable to various security threats, such as eavesdropping and tampering. To mitigate these risks, two secure DNS protocols have emerged: DNS over HTTPS (DoH) and DNS over TLS (DoT). In this article, we will delve into the details of these two protocols, their advantages, and their limitations.</p>
+<h2>Traditional DNS and its Limitations</h2>
+<p>The traditional DNS protocol uses UDP as its transport protocol and sends DNS queries and responses in plaintext. This makes it vulnerable to various attacks, such as:</p>
+<ul>
+  <li>Eavesdropping: An attacker can intercept DNS queries and responses, gaining sensitive information about the user's online activities.</li>
+  <li>Tampering: An attacker can modify DNS responses, redirecting users to malicious websites or altering the IP addresses of legitimate websites.</li>
+  <li>Cache poisoning: An attacker can inject fake DNS cache entries, making it difficult for users to access legitimate websites.</li>
+</ul>
+<p>These limitations have led to the development of secure DNS protocols that can protect users from these threats.</p>
+<h2>DNS over HTTPS (DoH)</h2>
+<p>DoH is a protocol that uses HTTPS to encrypt DNS queries and responses. It uses the same protocol as the HTTP/2 protocol and sends DNS queries and responses over a secure connection. DoH has several advantages, including:</p>
+<ul>
+  <li>Encryption: DoH encrypts DNS queries and responses, making it difficult for attackers to intercept or tamper with them.</li>
+  <li>Authentication: DoH uses HTTPS, which provides authentication and verification of the DNS server's identity.</li>
+  <li>Cache management: DoH allows for more efficient cache management, reducing the risk of cache poisoning attacks.</li>
+</ul>
+<p>DoH also has some limitations, including:</p>
+<ul>
+  <li>Performance: DoH can be slower than traditional DNS due to the additional overhead of HTTPS encryption.</li>
+  <li>Browser support: DoH requires browser support, which may not be available on older browsers or devices.</li>
+</ul>
+<p>Practical example: A user tries to access a website using a web browser that supports DoH. The user's browser sends a DNS query to the DoH server, which encrypts the query and sends it to the DNS server. The DNS server responds with an encrypted answer, which the DoH server decrypts and sends back to the user's browser.</p>
+<h2>DNS over TLS (DoT)</h2>
+<p>DoT is a protocol that uses TLS to encrypt DNS queries and responses. It uses the same protocol as traditional DNS but adds an extra layer of encryption. DoT has several advantages, including:</p>
+<ul>
+  <li>Encryption: DoT encrypts DNS queries and responses, making it difficult for attackers to intercept or tamper with them.</li>
+  <li>Authentication: DoT uses TLS, which provides authentication and verification of the DNS server's identity.</li>
+  <li>Scalability: DoT is more scalable than DoH, as it does not require browser support.</li>
+</ul>
+<p>DoT also has some limitations, including:</p>
+<ul>
+  <li>Complexity: DoT is more complex to implement than DoH, as it requires additional configuration and setup.</li>
+  <li>Interoperability: DoT may not be compatible with all DNS servers or devices.</li>
+</ul>
+<p>Practical example: A user tries to access a website using a device that supports DoT. The user's device sends a DNS query to the DoT server, which encrypts the query using TLS. The DoT server then sends the encrypted query to the DNS server, which responds with an encrypted answer. The DoT server decrypts the answer and sends it back to the user's device.</p>
+<h2>Conclusion</h2>
+<p>In conclusion, DNS over HTTPS (DoH) and DNS over TLS (DoT) are two secure DNS protocols that can protect users from various security threats. While DoH has some advantages, including encryption and authentication, it also has some limitations, including performance and browser support. DoT, on the other hand, has some advantages, including scalability and authentication, but also has some limitations, including complexity and interoperability. Ultimately, the choice between DoH and DoT depends on the specific use case and requirements.</p>
+<p>At TraceQube, we recommend using secure DNS protocols to protect your online activities. Whether you choose DoH or DoT, make sure to configure your device or browser to use a secure DNS server to ensure the best possible security and performance.</p>
+    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border)">
+      <a href="/tools"><button class="btn-lg primary">Explore All Tools</button></a>
+    </div>
+  </div>
+</div>
+{{end}}

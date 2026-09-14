@@ -1,0 +1,164 @@
+{{define "content"}}
+<div class="container">
+  <!-- HERO -->
+  <section class="hero-section">
+    <div class="hero-grid">
+      <div class="hero-left">
+        <div class="hero-kicker">Network diagnostics <em>// for developers</em></div>
+        <h1 class="display">Diagnose any<br><em>network issue</em><br>instantly.</h1>
+        <p class="hero-sub">12 free tools for developers and sysadmins. IP lookup, DNS records, SSL checks, port scanning, and more. No account needed.</p>
+        <div class="hero-actions">
+          <a href="/tools"><button class="btn-lg primary">Explore tools</button></a>
+          <a href="/api-docs"><button class="btn-lg secondary">API docs</button></a>
+        </div>
+        <div class="hero-note">All tools free forever. API access from $5/mo.</div>
+      </div>
+      <div class="hero-right">
+        <div class="terminal">
+          <div class="t-bar">
+            <div class="t-dots"><div class="t-dot r"></div><div class="t-dot y"></div><div class="t-dot g"></div></div>
+            <div class="t-title">traceqube — diagnostics</div>
+          </div>
+          <div class="t-body">
+<span class="t-prompt">$ </span><span class="t-cmd">tq ping google.com</span>
+<span class="t-dim">  Resolving google.com...</span>
+<span class="t-out">  seq 1: <span class="t-ok">12 ms</span>   seq 2: <span class="t-ok">11 ms</span></span>
+<span class="t-out">  seq 3: <span class="t-ok">13 ms</span>   seq 4: <span class="t-ok">11 ms</span></span>
+<span class="t-out">  avg: <span class="t-ok">11.8 ms</span>  loss: <span class="t-ok">0%</span></span>
+
+<span class="t-prompt">$ </span><span class="t-cmd">tq dns traceqube.com A</span>
+<span class="t-out">  A  <span class="t-hi">72.60.234.142</span>  ttl:300</span>
+
+<span class="t-prompt">$ </span><span class="t-cmd">tq ssl traceqube.com</span>
+<span class="t-out">  issuer: <span class="t-hi">Let's Encrypt R3</span></span>
+<span class="t-out">  expires: <span class="t-ok">2026-08-15</span>  tls: <span class="t-ok">TLSv1.3</span></span>
+
+<span class="t-prompt">$ </span><span class="t-cursor"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="stats-row">
+      <div class="stat-cell"><div class="stat-num">12<em>+</em></div><div class="stat-lbl">Free tools</div></div>
+      <div class="stat-cell"><div class="stat-num">0<em>ms</em></div><div class="stat-lbl">Signup delay</div></div>
+      <div class="stat-cell"><div class="stat-num">99<em>%</em></div><div class="stat-lbl">Uptime</div></div>
+      <div class="stat-cell"><div class="stat-num">REST</div><div class="stat-lbl">API access</div></div>
+    </div>
+  </section>
+
+  <!-- TOOLS BENTO -->
+  <section class="section">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Tools</div>
+        <h2 class="section-title">Everything you need<br>to debug the network.</h2>
+      </div>
+      <div>
+        <p class="section-sub">Free to use, no rate limits on the browser UI. Need programmatic access? Start free, upgrade when you're ready.</p>
+        <a href="/tools" class="section-link">View all tools <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" style="stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M2 6h8M6 2l4 4-4 4"/></svg></a>
+      </div>
+    </div>
+    <div class="bento">
+      <a href="/tools/speed-test" class="b-card span5 featured">
+        <div class="b-tag">Live tool</div>
+        <div class="b-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <div class="b-title">Internet Speed Test</div>
+        <div class="b-desc">Test your download speed, upload speed, and latency.</div>
+        <div class="b-arrow"><svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>
+      </a>
+      <a href="/tools/dns-lookup" class="b-card span4">
+        <div class="b-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M12 2a14.5 14.5 0 0 1 0 20M2 12h20"/></svg></div>
+        <div class="b-title">DNS Lookup</div>
+        <div class="b-desc">Query A, AAAA, MX, CNAME, TXT, NS records for any domain.</div>
+        <div class="b-arrow"><svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>
+      </a>
+      <a href="/tools/ssl-checker" class="b-card span3">
+        <div class="b-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div class="b-title">SSL Checker</div>
+        <div class="b-desc">Verify cert validity and expiry.</div>
+        <div class="b-arrow"><svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>
+      </a>
+      <a href="/tools/what-is-my-ip" class="b-card span3">
+        <div class="b-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M8 12h8M12 8v8"/></svg></div>
+        <div class="b-title">My IP</div>
+        <div class="b-desc">Detect your public IP, ISP, location.</div>
+        <div class="b-arrow"><svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>
+      </a>
+      <a href="/tools/port-checker" class="b-card span4">
+        <div class="b-icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+        <div class="b-title">Port Checker</div>
+        <div class="b-desc">Check if a TCP port is open or closed on any host.</div>
+        <div class="b-arrow"><svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>
+      </a>
+      <a href="/tools/ip-geolocation" class="b-card span5">
+        <div class="b-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="b-title">IP Geolocation</div>
+        <div class="b-desc">Look up country, city, ISP, and timezone for any IP address worldwide.</div>
+        <div class="b-arrow"><svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>
+      </a>
+      <a href="/tools/whois-lookup" class="b-card span3">
+        <div class="b-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div class="b-title">WHOIS</div>
+        <div class="b-desc">Registrar, expiry, nameservers.</div>
+        <div class="b-arrow"><svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>
+      </a>
+      <a href="/tools/reverse-dns" class="b-card span3">
+        <div class="b-icon"><svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg></div>
+        <div class="b-title">Reverse DNS</div>
+        <div class="b-desc">IP to hostname via PTR records.</div>
+        <div class="b-arrow"><svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>
+      </a>
+      <a href="/tools/http-header-checker" class="b-card span3">
+        <div class="b-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h8"/></svg></div>
+        <div class="b-title">HTTP Headers</div>
+        <div class="b-desc">Inspect response headers.</div>
+        <div class="b-arrow"><svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>
+      </a>
+      <a href="/tools/subnet-calculator" class="b-card span3">
+        <div class="b-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="6" height="6" rx="1"/><rect x="16" y="7" width="6" height="6" rx="1"/><rect x="9" y="14" width="6" height="6" rx="1"/><path d="M5 13v3h14v-3M12 13v1"/></svg></div>
+        <div class="b-title">Subnet Calc</div>
+        <div class="b-desc">Network ranges from CIDR notation.</div>
+        <div class="b-arrow"><svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>
+      </a>
+      <a href="/tools/ping-test" class="b-card span4">
+        <div class="b-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M20.49 3.51a12 12 0 0 1 0 16.98M3.51 20.49a12 12 0 0 1 0-16.98"/></svg></div>
+        <div class="b-title">Ping Test</div>
+        <div class="b-desc">Measure latency and reachability to any host or IP address in real time.</div>
+        <div class="b-arrow"><svg viewBox="0 0 12 12"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>
+      </a>
+    </div>
+  </section>
+
+  <!-- API SECTION -->
+  <section class="api-section">
+    <div class="api-grid">
+      <div>
+        <div class="eyebrow">REST API</div>
+        <h2>Integrate all 12 tools<br>into your app.</h2>
+        <p>Simple REST API with JSON responses. Add network diagnostics to your stack in minutes. Start free, upgrade when you need volume.</p>
+        <div class="plan-list">
+          <div class="plan-row"><span class="plan-name free">FREE</span><span class="plan-req">50 req/day</span><span class="plan-price">$0/mo</span></div>
+          <div class="plan-row hi"><span class="plan-name pro">PRO</span><span class="plan-req">5,000 req/day</span><span class="plan-price">$5/mo</span></div>
+          <div class="plan-row"><span class="plan-name ent">ENTERPRISE</span><span class="plan-req">50,000 req/day</span><span class="plan-price">$20/mo</span></div>
+        </div>
+        <a href="/pricing"><button class="btn-lg primary">Get API key</button></a>
+      </div>
+      <div class="code-window">
+        <div class="cw-bar"><span class="cw-lang">HTTP</span></div>
+        <div class="cw-body"><span class="c-fn">GET</span> <span class="c-st">https://api.traceqube.com/v1/ping</span>
+    <span class="c-ky">?host</span>=<span class="c-nu">google.com</span>
+<span class="c-cm">X-API-Key: your_key_here</span>
+
+<span class="c-cm">// Response</span>
+{
+  <span class="c-ky">"host"</span>:   <span class="c-st">"google.com"</span>,
+  <span class="c-ky">"avg_ms"</span>: <span class="c-nu">11.8</span>,
+  <span class="c-ky">"loss"</span>:   <span class="c-nu">0</span>,
+  <span class="c-ky">"status"</span>: <span class="c-ok">"reachable"</span>,
+  <span class="c-ky">"seq"</span>:    [<span class="c-nu">12</span>, <span class="c-nu">11</span>, <span class="c-nu">13</span>, <span class="c-nu">11</span>]
+}</div>
+      </div>
+    </div>
+  </section>
+</div>
+{{end}}

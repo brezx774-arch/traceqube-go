@@ -1,0 +1,269 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+    <div><div class="tool-badge">Tool</div><h1 class="tq-title">Internet Speed Test</h1><p class="tq-sub">Test your download speed in real time.</p></div>
+  </div>
+  <div class="tq-card">
+    <div class="speed-center">
+      <div class="speed-display" id="speedDisplay">--</div>
+      <div class="speed-unit" id="speedUnit">Mbps Download</div>
+      <div class="speed-status" id="statusText" style="margin-top:8px;font-size:13px;opacity:.6"></div>
+      <button class="tq-btn" onclick="runSpeed()" id="startBtn" style="margin-top:24px">Start Test</button>
+    </div>
+  </div>
+  <div class="tq-info-grid" id="results"></div>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+    <h2>What Does a Speed Test Measure?</h2>
+    <p>An internet speed test measures your download speed by downloading a file from a remote server and calculating the transfer rate in Mbps (megabits per second).</p>
+    <h2>Speed Guidelines</h2>
+    <div class="def-grid">
+      <div class="def-item"><span class="def-term">Download Speed</span><span class="def-desc">HD streaming needs 5+ Mbps. 4K needs 25+ Mbps. Video calls need 3+ Mbps.</span></div>
+      <div class="def-item"><span class="def-term">Latency (Ping)</span><span class="def-desc">Under 20ms is excellent. Under 50ms is good for most tasks.</span></div>
+    </div>
+    <h2>Common Use Cases</h2>
+    <ul>
+      <li><strong>ISP performance verification</strong> — confirm you're actually receiving the download/upload speeds advertised by your ISP plan.</li>
+      <li><strong>Troubleshooting slow connections</strong> — identify whether slowness is a bandwidth issue or a latency/jitter issue affecting real-time apps.</li>
+      <li><strong>Remote work diagnostics</strong> — check connection quality before video calls or large file transfers.</li>
+      <li><strong>Comparing networks</strong> — benchmark speed across different networks (e.g. home Wi-Fi vs. mobile data) to decide which to use for a task.</li>
+      <li><strong>Server-side bandwidth checks</strong> — verify a VPS or server's actual outbound bandwidth matches what's advertised by the hosting provider.</li>
+    </ul>
+    <h2>Example</h2>
+    <div class="example-callout">
+      <p>A connection advertised as 100 Mbps but consistently testing at 40 Mbps download with high jitter suggests network congestion, an outdated router, or an ISP-side issue worth raising with your provider.</p>
+    </div>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>Why do my results vary between tests?</h3>
+      <p>Network conditions fluctuate due to congestion, Wi-Fi interference, and the number of devices sharing your connection at the time of the test.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What's a good speed for video calls?</h3>
+      <p>Generally 3-4 Mbps up/down is sufficient for HD video calls, though higher is better for group calls or simultaneous usage.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why is my upload speed lower than download?</h3>
+      <p>Most residential ISP plans are asymmetric by design, prioritizing download bandwidth since most consumer usage is download-heavy (streaming, browsing).</p>
+    </div>
+    <div class="faq-item">
+      <h3>What does jitter affect?</h3>
+      <p>High jitter (inconsistent latency) causes choppy audio/video in calls and lag spikes in online gaming, even if average speed looks fine.</p>
+    </div>
+  </div>
+  </div>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why do my results vary between tests?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Network conditions fluctuate due to congestion, Wi-Fi interference, and the number of devices sharing your connection at the time of the test."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's a good speed for video calls?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Generally 3-4 Mbps up/down is sufficient for HD video calls, though higher is better for group calls or simultaneous usage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my upload speed lower than download?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most residential ISP plans are asymmetric by design, prioritizing download bandwidth since most consumer usage is download-heavy (streaming, browsing)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does jitter affect?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "High jitter (inconsistent latency) causes choppy audio/video in calls and lag spikes in online gaming, even if average speed looks fine."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:15px;margin-bottom:4px}
+
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+</style>
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached — resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+async function pingTest(samples) {
+  const times = [];
+  for (let i = 0; i < samples; i++) {
+    const t0 = performance.now();
+    await fetch('https://speed.cloudflare.com/__down?bytes=0', { cache: 'no-store' });
+    times.push(performance.now() - t0);
+  }
+  times.shift();
+  const avg = times.reduce((a, b) => a + b, 0) / times.length;
+  const jitter = times.reduce((a, b) => a + Math.abs(b - avg), 0) / times.length;
+  return { ping: avg, jitter: jitter };
+}
+
+async function downloadTest(bytes) {
+  const url = 'https://speed.cloudflare.com/__down?bytes=' + bytes;
+  const start = performance.now();
+  const res = await fetch(url, { cache: 'no-store' });
+  await res.arrayBuffer();
+  const elapsed = (performance.now() - start) / 1000;
+  return { mbps: (bytes * 8) / elapsed / 1000000, elapsed: elapsed };
+}
+
+async function uploadTest(bytes) {
+  const data = new Uint8Array(bytes);
+  const start = performance.now();
+  await fetch('https://speed.cloudflare.com/__up', { method: 'POST', body: data, cache: 'no-store' });
+  const elapsed = (performance.now() - start) / 1000;
+  return { mbps: (bytes * 8) / elapsed / 1000000, elapsed: elapsed };
+}
+
+async function getMeta() {
+  const res = await fetch('https://speed.cloudflare.com/meta', { cache: 'no-store' });
+  return await res.json();
+}
+
+async function runSpeed() {
+  const btn = document.getElementById('startBtn');
+  const display = document.getElementById('speedDisplay');
+  const unit = document.getElementById('speedUnit');
+  const status = document.getElementById('statusText');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Testing';
+  display.textContent = '--';
+  document.getElementById('ai-analyze-btn').style.display = 'none';
+  document.getElementById('ai-result-card').style.display = 'none';
+  document.getElementById('results').innerHTML = '';
+
+  try {
+    status.textContent = 'Testing ping...';
+    const pingResult = await pingTest(6);
+
+    status.textContent = 'Testing download...';
+    unit.textContent = 'Mbps Download';
+    const dl = await downloadTest(15000000);
+    display.textContent = dl.mbps.toFixed(2);
+
+    status.textContent = 'Testing upload...';
+    unit.textContent = 'Mbps Upload';
+    const ul = await uploadTest(5000000);
+    display.textContent = ul.mbps.toFixed(2);
+
+    status.textContent = 'Fetching server info...';
+    let meta = null;
+    try { meta = await getMeta(); } catch (e) {}
+
+    unit.textContent = 'Mbps Download';
+    display.textContent = dl.mbps.toFixed(2);
+    status.textContent = '';
+
+    const coloCity = (meta && meta.colo && meta.colo.city) ? meta.colo.city : (meta && typeof meta.colo === 'string' ? meta.colo : 'Unknown');
+    const yourLocation = meta ? [meta.city, meta.region, meta.country].filter(Boolean).join(', ') : 'Unknown';
+    const isp = meta && meta.asOrganization ? meta.asOrganization : 'Unknown';
+    const ip = meta && meta.clientIp ? meta.clientIp : 'Unknown';
+
+    document.getElementById('results').innerHTML =
+      '<div class="tq-info-card"><div class="tq-info-label">Download Speed</div><div class="tq-info-value">' + dl.mbps.toFixed(2) + ' Mbps</div></div>' +
+      '<div class="tq-info-card"><div class="tq-info-label">Upload Speed</div><div class="tq-info-value">' + ul.mbps.toFixed(2) + ' Mbps</div></div>' +
+      '<div class="tq-info-card"><div class="tq-info-label">Ping</div><div class="tq-info-value neutral">' + pingResult.ping.toFixed(1) + ' ms</div></div>' +
+      '<div class="tq-info-card"><div class="tq-info-label">Jitter</div><div class="tq-info-value neutral">' + pingResult.jitter.toFixed(1) + ' ms</div></div>' +
+      '<div class="tq-info-card"><div class="tq-info-label">Server</div><div class="tq-info-value neutral">' + coloCity + '</div></div>' +
+      '<div class="tq-info-card"><div class="tq-info-label">Your Location</div><div class="tq-info-value neutral">' + yourLocation + '</div></div>' +
+      '<div class="tq-info-card"><div class="tq-info-label">ISP</div><div class="tq-info-value neutral">' + isp + '</div></div>' +
+      '<div class="tq-info-card"><div class="tq-info-label">IP Address</div><div class="tq-info-value neutral">' + ip + '</div></div>';
+
+    const summary = 'Download Speed: ' + dl.mbps.toFixed(2) + ' Mbps\n' +
+      'Upload Speed: ' + ul.mbps.toFixed(2) + ' Mbps\n' +
+      'Ping: ' + pingResult.ping.toFixed(1) + ' ms\n' +
+      'Jitter: ' + pingResult.jitter.toFixed(1) + ' ms\n' +
+      'Server: ' + coloCity + '\n' +
+      'Your Location: ' + yourLocation + '\n' +
+      'ISP: ' + isp;
+    tqInitAIAnalyze({ tool: 'speed-test', target: 'speed-test', getOutput: () => summary });
+  } catch (e) {
+    display.textContent = 'Error';
+    status.textContent = 'Test failed, please try again.';
+  }
+  btn.disabled = false;
+  btn.textContent = 'Test Again';
+}
+</script>
+{{end}}

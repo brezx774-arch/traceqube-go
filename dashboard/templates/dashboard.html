@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard – TraceQube</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+</head>
+<body>
+<div class="dash-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark"><svg viewBox="0 0 11 11"><polyline points="1,9 4,4 7,6.5 9.5,3"/></svg></div>
+      Trace<em>Qube</em>
+    </div>
+    <nav>
+      <button class="nav-item active" id="navOverview" onclick="showTab('overview')">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        Overview
+      </button>
+      <button class="nav-item" id="navBilling" onclick="showTab('billing')">
+        <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Billing
+      </button>
+      <button class="nav-item" id="navDocs" onclick="showTab('docs')">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="12" y2="17"/></svg>
+        API Docs
+      </button>
+      <a href="https://traceqube.com/tools" class="nav-item">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49"/></svg>
+        Tools
+      </a>
+    </nav>
+    <div class="sidebar-bottom">
+      <div id="adminLinkWrap" style="display:none">
+        <a href="/admin" class="nav-item">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+          Admin Panel
+        </a>
+      </div>
+      <button class="nav-item" onclick="logout()">
+        <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="dash-main">
+    <div class="dash-header">
+      <div class="dash-header-left">
+        <div class="dash-title" id="pageTitle">Overview</div>
+        <div class="dash-email" id="userEmail"></div>
+      </div>
+      <div class="dash-header-right">
+        <button class="theme-btn" id="themeBtn">🌤</button>
+        <a href="https://traceqube.com"><button class="btn btn-ghost btn-sm">← Site</button></a>
+      </div>
+    </div>
+
+    <div class="dash-content">
+      <div id="alertBox"></div>
+
+      <!-- OVERVIEW TAB -->
+      <div id="tabOverview">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Plan</div>
+            <div class="stat-value" id="planName">--</div>
+            <div class="stat-sub" id="planSub"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Requests Today</div>
+            <div class="stat-value" id="usageToday">--</div>
+            <div class="stat-sub" id="usageOf"></div>
+            <div class="progress-bar"><div class="progress-fill" id="usageBar" style="width:0%"></div></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Daily Limit</div>
+            <div class="stat-value" id="dailyLimit">--</div>
+            <div class="stat-sub">requests per day</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Your API Key</div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-ghost btn-sm" onclick="copyKey()">Copy</button>
+              <button class="btn btn-ghost btn-sm" onclick="regenKey()">Regenerate</button>
+            </div>
+          </div>
+          <div class="api-key-box" id="apiKey">Loading...</div>
+          <p style="color:var(--muted);font-size:0.75rem;margin-top:10px">Keep your API key secret. Do not expose it in public code or frontend JavaScript.</p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Security</div>
+          </div>
+          <p style="color:var(--muted);font-size:0.85rem;margin-bottom:12px">If you think your account or session may be compromised, this will invalidate all active sessions on every device, including this one. You'll need to log in again.</p>
+          <button class="btn btn-ghost btn-sm" onclick="logoutAll()">Log out of all devices</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Quick Start</div>
+          <div class="code-block">curl "https://api.traceqube.com/v1/dns?domain=example.com&type=A" \
+     -H "X-API-Key: YOUR_API_KEY"</div>
+          <button class="btn btn-ghost btn-sm" style="margin-top:14px" onclick="showTab('docs')">View full API docs →</button>
+        </div>
+      </div>
+
+      <!-- BILLING TAB -->
+      <div id="tabBilling" style="display:none">
+        <div class="stats-grid" style="margin-bottom:20px">
+          <div class="stat-card">
+            <div class="stat-label">Current Plan</div>
+            <div class="stat-value" id="billingPlan">--</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Monthly Cost</div>
+            <div class="stat-value" id="billingCost">--</div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Upgrade Plan</div>
+          <div class="plan-grid">
+            <div class="plan-card" id="planFree">
+              <div class="plan-name free">Free</div>
+              <div class="plan-price">$0<span>/mo</span></div>
+              <div class="plan-limit">50 requests/day</div>
+              <button class="btn btn-ghost btn-sm" style="width:100%" id="btnFree" disabled>Current</button>
+            </div>
+            <div class="plan-card" id="planPro">
+              <div class="plan-name pro">Pro</div>
+              <div class="plan-price">$5<span>/mo</span></div>
+              <div class="plan-limit">5,000 requests/day</div>
+              <div id="paypalPro"></div>
+            </div>
+            <div class="plan-card" id="planEnt">
+              <div class="plan-name ent">Enterprise</div>
+              <div class="plan-price">$20<span>/mo</span></div>
+              <div class="plan-limit">50,000 requests/day</div>
+              <div id="paypalEnterprise"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOCS TAB -->
+      <div id="tabDocs" style="display:none">
+        <div class="card">
+          <div class="card-title">API Reference</div>
+          <p style="font-size:0.82rem;color:var(--text2);margin-bottom:6px">Base URL: <code style="font-family:'Geist Mono',monospace;background:var(--surface2);padding:2px 8px;border-radius:5px;color:var(--accent)">https://api.traceqube.com</code></p>
+          <p style="font-size:0.82rem;color:var(--text2);margin-bottom:18px">Auth header: <code style="font-family:'Geist Mono',monospace;background:var(--surface2);padding:2px 8px;border-radius:5px;color:var(--accent)">X-API-Key: your_key</code></p>
+          <div class="code-block">GET /v1/ip
+GET /v1/dns?domain=example.com&type=A
+GET /v1/ping?host=example.com
+GET /v1/port?host=example.com&port=443
+GET /v1/ssl?domain=example.com
+GET /v1/whois?domain=example.com
+GET /v1/geo?ip=8.8.8.8
+GET /v1/rdns?ip=8.8.8.8
+GET /v1/subnet?cidr=192.168.1.0/24
+GET /v1/headers?url=https://example.com
+GET /v1/down?url=example.com</div>
+          <a href="https://traceqube.com/api-docs" target="_blank"><button class="btn btn-ghost btn-sm" style="margin-top:14px">Full documentation →</button></a>
+        </div>
+      </div>
+
+    </div><!-- /dash-content -->
+  </div><!-- /dash-main -->
+</div><!-- /dash-layout -->
+
+<!-- MOBILE NAV -->
+<nav class="mobile-nav">
+  <div class="mobile-nav-inner">
+    <button class="mobile-nav-btn active" id="mnOverview" onclick="showTab('overview')">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Overview
+    </button>
+    <button class="mobile-nav-btn" id="mnBilling" onclick="showTab('billing')">
+      <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Billing
+    </button>
+    <button class="mobile-nav-btn" id="mnDocs" onclick="showTab('docs')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16h16V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Docs
+    </button>
+    <button class="mobile-nav-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </div>
+</nav>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AYourPayPalClientID&currency=USD"></script>
+<script>
+const API = "https://api.traceqube.com";
+var token = localStorage.getItem("tq_token");
+var user = null;
+if (!token) window.location.href = "/";
+
+// Theme
+var saved = localStorage.getItem("tq-theme") || "dark";
+document.documentElement.setAttribute("data-theme", saved);
+var tb = document.getElementById("themeBtn");
+tb.textContent = saved === "dark" ? "🌤" : "🌙";
+tb.addEventListener("click", () => {
+  var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", next);
+  localStorage.setItem("tq-theme", next);
+  tb.textContent = next === "dark" ? "🌤" : "🌙";
+});
+
+function showAlert(msg, type) {
+  var box = document.getElementById("alertBox");
+  box.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+  setTimeout(() => box.innerHTML = "", 4000);
+}
+
+const TABS = ["overview","billing","docs"];
+function showTab(tab) {
+  TABS.forEach(t => {
+    var el = document.getElementById("tab" + t.charAt(0).toUpperCase() + t.slice(1));
+    if (el) el.style.display = t === tab ? "block" : "none";
+    var nav = document.getElementById("nav" + t.charAt(0).toUpperCase() + t.slice(1));
+    if (nav) nav.className = "nav-item" + (t === tab ? " active" : "");
+    var mn = document.getElementById("mn" + t.charAt(0).toUpperCase() + t.slice(1));
+    if (mn) mn.className = "mobile-nav-btn" + (t === tab ? " active" : "");
+  });
+  var titles = {overview:"Overview", billing:"Billing", docs:"API Docs"};
+  document.getElementById("pageTitle").textContent = titles[tab];
+}
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "/";
+}
+async function logoutAll() {
+  if (!confirm("This will log you out on all devices, including this one. Continue?")) return;
+  await fetch(API+"/api/me/logout-all", {method:"POST",credentials:"include"});
+  localStorage.clear();
+  window.location.href = "/login";
+}
+
+async function loadUser() {
+  var res = await fetch(API+"/api/me", {credentials:"include"});
+  var data = await res.json();
+  if (data.error) { localStorage.clear(); window.location.href = "/"; return; }
+  user = data;
+  document.getElementById("userEmail").textContent = data.email;
+  document.getElementById("apiKey").textContent = data.apiKey;
+  var plan = data.plan || "free";
+  var planLabel = plan.charAt(0).toUpperCase() + plan.slice(1);
+  document.getElementById("planName").textContent = planLabel;
+  document.getElementById("billingPlan").textContent = planLabel;
+  var costs = {free:"$0/mo", pro:"$5/mo", enterprise:"$20/mo"};
+  document.getElementById("billingCost").textContent = costs[plan] || "$0/mo";
+  var limit = data.dailyLimit || 50;
+  var used = data.usageToday || 0;
+  document.getElementById("usageToday").textContent = used;
+  document.getElementById("dailyLimit").textContent = limit.toLocaleString();
+  document.getElementById("usageOf").textContent = "of " + limit.toLocaleString() + " today";
+  document.getElementById("usageBar").style.width = Math.min((used/limit)*100, 100) + "%";
+  document.getElementById("planSub").textContent = limit.toLocaleString() + " req/day";
+  // Mark active plan
+  ["free","pro","enterprise"].forEach(p => {
+    var card = document.getElementById("plan" + p.charAt(0).toUpperCase() + p.slice(1));
+    if (card) card.classList.toggle("active-plan", p === plan);
+  });
+  if (data.isAdmin) {
+    document.getElementById("adminLinkWrap").style.display = "block";
+  }
+}
+
+async function copyKey() {
+  if (!user) return;
+  await navigator.clipboard.writeText(user.apiKey);
+  showAlert("API key copied to clipboard", "success");
+}
+
+async function regenKey() {
+  if (!confirm("Regenerate your API key? Your current key will stop working immediately.")) return;
+  var res = await fetch(API+"/api/me/regenerate-key", {method:"POST",credentials:"include"});
+  var data = await res.json();
+  if (res.status === 401) { localStorage.clear(); window.location.href = "/login"; return; }
+  if (data.error) return showAlert(data.error, "error");
+  user.apiKey = data.apiKey;
+  document.getElementById("apiKey").textContent = data.apiKey;
+  showAlert("API key regenerated successfully", "success");
+}
+
+loadUser();
+showTab("overview");
+</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49M7.76 16.24a6 6 0 0 1 0-8.49M20.49 3.51a12 12 0 0 1 0 16.98M3.51 20.49a12 12 0 0 1 0-16.98"/></svg></div>
+    <div>
+      <div class="tool-badge">Tool</div>
+      <h1 class="tq-title">Ping Test</h1>
+      <p class="tq-sub">Measure latency and reachability of any host or IP address.</p>
+    </div>
+  </div>
+  <div class="tq-card">
+    <div class="tq-row">
+      <input class="tq-input" id="host" placeholder="google.com or 8.8.8.8"/>
+      <button class="tq-btn" onclick="runPing()">Run Ping</button>
+    </div>
+  </div>
+  <pre class="tq-result" id="result" style="display:none"></pre>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+    <h2>What Is a Ping Test?</h2>
+    <p>A ping test measures the round-trip time for packets to travel from our server to a target host and back. It helps determine whether a host is reachable and how long the connection takes.</p>
+    <h2>Understanding Results</h2>
+    <p><strong>Latency (ms)</strong> — Under 20ms is excellent. Under 100ms is good for most applications. Over 150ms may cause issues for real-time applications like VoIP or gaming.</p>
+    <p><strong>Packet Loss</strong> — Any loss above 1% indicates a network problem. 0% is ideal for a stable connection.</p>
+
+    <h2>Common Use Cases</h2>
+    <ul>
+      <li><strong>Diagnosing slow websites</strong> — check if high latency to a server is the cause of slow page loads before investigating your own code or hosting.</li>
+      <li><strong>Verifying server uptime</strong> — quickly confirm whether a host is reachable before digging into deeper diagnostics.</li>
+      <li><strong>Gaming and VoIP troubleshooting</strong> — measure jitter and latency to game servers or call endpoints to identify connection quality issues.</li>
+      <li><strong>ISP performance checks</strong> — compare latency to the same host from different networks or times of day to spot ISP-side congestion.</li>
+      <li><strong>Pre-deployment checks</strong> — confirm a new server or VPS is reachable and responding with acceptable latency before pointing production traffic at it.</li>
+    </ul>
+
+    <h2>Example</h2>
+    <p>Running a ping test against <code>8.8.8.8</code> (Google's public DNS) typically returns latency under 30ms on most broadband connections with 0% packet loss. If you see consistently high latency (200ms+) or any packet loss to a well-connected target like this, the issue is likely on your local network or ISP rather than the destination.</p>
+
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>Why does my ping result differ from running ping in my terminal?</h3>
+      <p>This tool pings from our server's location, not your device. That's useful for testing server-to-server reachability or checking latency from a different geographic vantage point than your own connection.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What causes high packet loss?</h3>
+      <p>Common causes include network congestion, faulty hardware (routers/switches along the path), wireless interference, ISP throttling, or the destination server being overloaded.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is a ping test the same as a traceroute?</h3>
+      <p>No. A ping test only measures round-trip time and packet loss to the final destination. A traceroute shows every hop along the path, which helps pinpoint exactly where latency or loss is introduced.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can firewalls block ping requests?</h3>
+      <p>Yes. Many servers and networks block ICMP (the protocol ping uses) for security reasons. A host not responding to ping doesn't necessarily mean it's down — try a port checker or HTTP header check instead.</p>
+    </div>
+  </div>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Why does my ping result differ from running ping in my terminal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "This tool pings from our server's location, not your device. That's useful for testing server-to-server reachability or checking latency from a different geographic vantage point than your own connection."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What causes high packet loss?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Common causes include network congestion, faulty hardware along the path, wireless interference, ISP throttling, or the destination server being overloaded."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is a ping test the same as a traceroute?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. A ping test only measures round-trip time and packet loss to the final destination. A traceroute shows every hop along the path, which helps pinpoint exactly where latency or loss is introduced."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can firewalls block ping requests?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Many servers and networks block ICMP for security reasons. A host not responding to ping doesn't necessarily mean it's down."
+        }
+      }
+    ]
+  }
+  </script>
+</div>
+
+<style>
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:15px;margin-bottom:4px}
+</style>
+
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached \u2014 resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+async function runPing() {
+  const host = document.getElementById('host').value.trim();
+  if (!host) return;
+  const btn = event.target;
+  const r = document.getElementById('result');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Running';
+  r.style.display = 'block'; document.getElementById('ai-analyze-btn').style.display='none'; document.getElementById('ai-result-card').style.display='none';
+  r.textContent = 'Pinging ' + host + '...';
+  const res = await fetch('/api/ping?host=' + encodeURIComponent(host));
+  const data = await res.json();
+  btn.disabled = false;
+  btn.textContent = 'Run Ping';
+  if (data.error) { r.textContent = 'Error: ' + data.error; return; }
+  let out = 'host: ' + data.host + '\n\n';
+  (data.results || []).forEach(p => {
+    out += 'seq ' + p.seq + ': ' + (p.status === 'ok' ? p.ms + ' ms' : 'timeout') + '\n';
+  });
+  out += '\navg:  ' + (data.avg_ms || 'N/A') + ' ms';
+  out += '\nloss: ' + data.packet_loss;
+  r.textContent = out;
+  tqInitAIAnalyze({ tool: 'ping', target: host, getOutput: () => r.textContent });
+}
+</script>
+{{end}}

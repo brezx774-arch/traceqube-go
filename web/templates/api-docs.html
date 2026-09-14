@@ -1,0 +1,69 @@
+{{define "content"}}
+<div class="container">
+  <div class="docs-wrap">
+    <div class="eyebrow">REST API</div>
+    <h1 class="display" style="font-size:2rem;letter-spacing:-1px;margin-bottom:10px">TraceQube API</h1>
+    <p style="font-size:0.9rem;color:var(--text2);line-height:1.7;margin-bottom:28px">Integrate all 12 network diagnostic tools into your application via a simple REST API.</p>
+    <div class="api-base-card">
+      <div class="api-base-lbl">Base URL</div>
+      <div class="api-base-url">https://api.traceqube.com</div>
+    </div>
+    <div class="doc-h2">Authentication</div>
+    <p class="doc-p">Pass your API key as a header with every request:</p>
+    <div class="code-block">X-API-Key: your_api_key_here</div>
+    <div class="doc-h2">Plans &amp; Rate Limits</div>
+    <div class="plan-chips">
+      <div class="plan-chip"><div class="chip-name free">FREE</div><div class="chip-detail">50 req/day — $0/mo</div></div>
+      <div class="plan-chip featured"><div class="chip-name pro">PRO</div><div class="chip-detail">5,000 req/day — $5/mo</div></div>
+      <div class="plan-chip"><div class="chip-name ent">ENTERPRISE</div><div class="chip-detail">50,000 req/day — $20/mo</div></div>
+    </div>
+    <div class="doc-h2">Endpoints</div>
+    <div class="code-block">GET /v1/ip
+GET /v1/dns?domain=example.com&amp;type=A
+GET /v1/ping?host=example.com
+GET /v1/port?host=example.com&amp;port=443
+GET /v1/ssl?domain=example.com
+GET /v1/whois?domain=example.com
+GET /v1/geo?ip=8.8.8.8
+GET /v1/rdns?ip=8.8.8.8
+GET /v1/subnet?cidr=192.168.1.0/24
+GET /v1/headers?url=https://example.com
+GET /v1/down?url=example.com</div>
+    <div class="doc-h2">Example: Ping</div>
+    <div class="code-block">GET https://api.traceqube.com/v1/ping?host=google.com
+X-API-Key: your_key_here
+
+// Response
+{
+  "host":    "google.com",
+  "avg_ms":  11.8,
+  "loss":    0,
+  "status":  "reachable",
+  "seq":     [12, 11, 13, 11]
+}</div>
+    <div class="doc-h2">Example: DNS Lookup</div>
+    <div class="code-block">GET https://api.traceqube.com/v1/dns?domain=google.com&amp;type=MX
+X-API-Key: your_key_here
+
+// Response
+{
+  "domain":  "google.com",
+  "type":    "MX",
+  "results": ["10 smtp.google.com", "20 smtp2.google.com"]
+}</div>
+    <div class="doc-h2">Error Responses</div>
+    <p class="doc-p">All errors return a JSON object with an <code>error</code> field and an appropriate HTTP status code.</p>
+    <div class="code-block">// 401 Unauthorized
+{ "error": "Invalid or missing API key" }
+
+// 429 Too Many Requests
+{ "error": "Rate limit exceeded. Upgrade your plan." }
+
+// 400 Bad Request
+{ "error": "Invalid host parameter" }</div>
+    <div style="margin-top:36px;text-align:center">
+      <a href="/pricing"><button class="btn-lg primary">Get your API key</button></a>
+    </div>
+  </div>
+</div>
+{{end}}

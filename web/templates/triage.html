@@ -1,0 +1,199 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg></div>
+    <div>
+      <div class="tool-badge">AI Tool</div>
+      <h1 class="tq-title">Incident Triage</h1>
+      <p class="tq-sub">Paste any raw diagnostic output — traceroute, ping, curl -v, DNS errors, server logs — or upload a screenshot, and let TraceQube AI identify what's wrong and what to check next.</p>
+    </div>
+  </div>
+  <div class="tq-card">
+    <textarea class="tq-input tq-textarea" id="triage-input" rows="10" placeholder="Paste your traceroute, ping, curl -v, DNS error, or log output here..."></textarea>
+    <div class="triage-divider"><span>or</span></div>
+    <div class="triage-dropzone" id="triage-dropzone">
+      <input type="file" id="triage-file-input" accept="image/png,image/jpeg,image/webp" style="display:none">
+      <div id="triage-dropzone-empty">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28"><path d="M4 16l4-4 4 4 5-5 3 3M4 20h16a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1z"/><circle cx="8" cy="8" r="1.5"/></svg>
+        <p>Drop a screenshot here, or <span class="triage-browse-link" id="triage-browse-link">browse</span></p>
+        <p class="triage-hint">PNG, JPEG, or WebP — up to 5MB</p>
+      </div>
+      <div id="triage-dropzone-preview" style="display:none">
+        <img id="triage-preview-img" alt="Screenshot preview">
+        <button type="button" id="triage-remove-img" aria-label="Remove image">&times;</button>
+      </div>
+    </div>
+    <div class="tq-row" style="margin-top:10px">
+      <button class="tq-btn" id="triage-btn" onclick="runTriage()">Analyze</button>
+    </div>
+  </div>
+  <div class="ai-widget-wrap">
+    <div class="ai-result-card tq-card" id="triage-result-card" style="display:none"></div>
+  </div>
+  <div class="seo-section">
+    <h2>What Is Incident Triage?</h2>
+    <p>Incident triage takes messy, unstructured diagnostic output and identifies the type of problem, where it's failing, and the most likely root cause — without you needing to know which specific tool to
+run first.</p>
+    <h2>What Can I Paste Here?</h2>
+    <p>Traceroute or MTR output, ping results, <code>curl -v</code> output, DNS resolution errors, SSL handshake failures, or server error logs. You can also upload a screenshot of any of these — a terminal window, an error dialog, or a browser's network panel — and the AI will read it directly. Either way, it classifies the input automatically and points you to
+the right follow-up tool.</p>
+  </div>
+</div>
+<style>
+.tq-textarea{width:100%;min-height:180px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;line-height:1.5;resize:vertical}
+.ai-widget-wrap{margin:14px 0}
+.ai-result-card{margin-top:0;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.7}
+.ai-result-body b{color:#6366f1}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+.triage-next-link{display:inline-block;margin-top:10px;font-size:13px;font-weight:600;color:#6366f1;text-decoration:none}
+.triage-next-link:hover{text-decoration:underline}
+.triage-divider{display:flex;align-items:center;gap:10px;margin:14px 0;font-size:12px;opacity:.5;text-transform:uppercase;letter-spacing:.05em}
+.triage-divider::before,.triage-divider::after{content:'';flex:1;height:1px;background:currentColor;opacity:.3}
+.triage-dropzone{border:1.5px dashed rgba(120,120,140,.35);border-radius:8px;padding:20px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.triage-dropzone:hover,.triage-dropzone.drag-over{border-color:#6366f1;background:rgba(99,102,241,.05)}
+.triage-dropzone p{margin:6px 0 0;font-size:13px}
+.triage-hint{opacity:.55;font-size:12px!important}
+.triage-browse-link{color:#6366f1;font-weight:600;text-decoration:underline;cursor:pointer}
+#triage-dropzone-preview{position:relative;display:inline-block}
+#triage-preview-img{max-height:160px;max-width:100%;border-radius:6px;display:block}
+#triage-remove-img{position:absolute;top:-8px;right:-8px;width:22px;height:22px;border-radius:50%;border:none;background:#dc2626;color:#fff;font-size:15px;line-height:1;cursor:pointer}
+</style>
+<script>
+const TQ_TOOL_LINKS = {
+  'dns lookup': '/tools/dns-lookup',
+  'ping test': '/tools/ping-test',
+  'port checker': '/tools/port-checker',
+  'ssl checker': '/tools/ssl-checker',
+  'whois lookup': '/tools/whois-lookup',
+  'reverse dns': '/tools/reverse-dns',
+  'http header checker': '/tools/http-header-checker',
+  'speed test': '/tools/speed-test'
+};
+let triageSelectedFile = null;
+
+function tqEscape(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+}
+function renderTriageResult(analysis) {
+  const lines = String(analysis).split('\n').filter(l => l.trim());
+  let html = '';
+  let nextStepTool = null;
+  lines.forEach(line => {
+    const m = line.match(/^(Type|Failure point|Likely cause|Suggested next step):\s*(.*)$/i);
+    if (m) {
+      const label = m[1];
+      const value = m[2];
+      html += '<p><b>' + tqEscape(label) + ':</b> ' + tqEscape(value) + '</p>';
+      if (/suggested next step/i.test(label)) {
+        const lower = value.toLowerCase();
+        for (const key in TQ_TOOL_LINKS) {
+          if (lower.includes(key)) { nextStepTool = key; break; }
+        }
+      }
+    } else {
+      html += '<p>' + tqEscape(line) + '</p>';
+    }
+  });
+  if (nextStepTool) {
+    html += '<a class="triage-next-link" href="' + TQ_TOOL_LINKS[nextStepTool] + '">Open ' +
+      tqEscape(nextStepTool.replace(/\b\w/g, c => c.toUpperCase())) + ' &rarr;</a>';
+  }
+  return html;
+}
+
+function triageShowPreview(file) {
+  triageSelectedFile = file;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('triage-preview-img').src = e.target.result;
+    document.getElementById('triage-dropzone-empty').style.display = 'none';
+    document.getElementById('triage-dropzone-preview').style.display = 'inline-block';
+  };
+  reader.readAsDataURL(file);
+}
+function triageClearPreview() {
+  triageSelectedFile = null;
+  document.getElementById('triage-file-input').value = '';
+  document.getElementById('triage-dropzone-preview').style.display = 'none';
+  document.getElementById('triage-dropzone-empty').style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const dropzone = document.getElementById('triage-dropzone');
+  const fileInput = document.getElementById('triage-file-input');
+  document.getElementById('triage-browse-link').addEventListener('click', e => {
+    e.stopPropagation();
+    fileInput.click();
+  });
+  dropzone.addEventListener('click', () => {
+    if (!triageSelectedFile) fileInput.click();
+  });
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) triageShowPreview(fileInput.files[0]);
+  });
+  document.getElementById('triage-remove-img').addEventListener('click', e => {
+    e.stopPropagation();
+    triageClearPreview();
+  });
+  ['dragover', 'dragenter'].forEach(evt =>
+    dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.classList.add('drag-over'); })
+  );
+  ['dragleave', 'drop'].forEach(evt =>
+    dropzone.addEventListener(evt, e => { e.preventDefault(); dropzone.classList.remove('drag-over'); })
+  );
+  dropzone.addEventListener('drop', e => {
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) triageShowPreview(file);
+  });
+});
+
+async function runTriage() {
+  const input = document.getElementById('triage-input').value.trim();
+  if (!input && !triageSelectedFile) return;
+  const btn = document.getElementById('triage-btn');
+  const card = document.getElementById('triage-result-card');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Analyzing...';
+  card.style.display = 'block';
+  card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your input...</p>';
+  try {
+    let res;
+    if (triageSelectedFile) {
+      const formData = new FormData();
+      formData.append('screenshot', triageSelectedFile);
+      res = await fetch('/api/ai/triage', { method: 'POST', body: formData });
+    } else {
+      res = await fetch('/api/ai/triage', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ output: input })
+      });
+    }
+    const data = await res.json();
+    if (!res.ok || data.error) {
+      card.innerHTML = '<p class="ai-error">' + tqEscape(data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+    } else {
+      const left = data.remaining;
+      const remainingText = (left > 0)
+        ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') +
+' remaining today'
+        : 'Daily free limit reached \u2014 resets tomorrow';
+      card.innerHTML =
+        '<div class="ai-result-header">Triage Result</div>' +
+        '<div class="ai-result-body">' + renderTriageResult(data.analysis) + '</div>' +
+        '<div class="ai-remaining">' + remainingText + '</div>';
+    }
+  } catch (e) {
+    card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Analyze';
+  }
+}
+</script>
+{{end}}

@@ -1,0 +1,183 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20M12 2a14.5 14.5 0 0 1 0 20M2 12h20"/></svg></div>
+    <div><div class="tool-badge">Tool</div><h1 class="tq-title">DNS Lookup</h1><p class="tq-sub">Query DNS records for any domain. Supports A, AAAA, MX, CNAME, TXT, and NS.</p></div>
+  </div>
+  <div class="tq-card">
+    <div class="tq-row">
+      <input class="tq-input" id="domain" placeholder="example.com"/>
+      <select class="tq-select" id="type"><option>A</option><option>AAAA</option><option>MX</option><option>CNAME</option><option>TXT</option><option>NS</option></select>
+      <button class="tq-btn" onclick="runLookup()">Lookup</button>
+    </div>
+  </div>
+  <pre class="tq-result" id="result" style="display:none"></pre>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+<h2>What Is a DNS Lookup?</h2>
+    <p>A DNS lookup queries the DNS infrastructure to retrieve records associated with
+a domain. DNS translates human-readable domain names into IP addresses that servers use to route traffic.</p>
+    <h2>Record Types</h2>
+    <p><strong>A</strong> — Maps domain to IPv4 address. <strong>AAAA</strong> — Maps to IPv6. <strong>MX</strong> — Mail exchange servers. <strong>CNAME</strong> — Alias to
+another domain. <strong>TXT</strong> — Arbitrary text for SPF/DKIM. <strong>NS</strong> — Authoritative nameservers.</p>
+  </div>
+</div>
+  <div class="seo-section">
+    <h2>Common Use Cases</h2>
+    <ul>
+      <li><strong>Verifying DNS propagation</strong> — check whether recent DNS changes (A, CNAME, MX records) have propagated after updating your domain.</li>
+      <li><strong>Email deliverability troubleshooting</strong> — confirm MX and TXT (SPF/DKIM) records are correctly configured before diagnosing why mail is bouncing.</li>
+      <li><strong>Migration checks</strong> — confirm a domain now points to a new host or IP after a server migration.</li>
+      <li><strong>Security audits</strong> — spot unexpected or stale DNS records that could indicate misconfiguration or compromise.</li>
+    </ul>
+    <h2>Example</h2>
+    <p>Looking up <code>github.com</code> returns its A records pointing to GitHub's load-balanced IPs, along with MX records for its mail routing and TXT records used for domain verification and SPF.</p>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>Why do I see different results than my own computer?</h3>
+      <p>DNS results can vary based on caching and which DNS resolver is being queried. This tool queries authoritative or public resolvers directly, which may differ from your local ISP's cached results.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How long does DNS propagation take?</h3>
+      <p>Typically a few minutes to 48 hours, depending on the TTL (time-to-live) set on the record and how widely it has been cached across resolvers.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What's the difference between A and CNAME records?</h3>
+      <p>An A record points a domain directly to an IPv4 address. A CNAME record points a domain to another domain name instead of an IP.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why is my MX record important?</h3>
+      <p>MX records tell other mail servers where to deliver email for your domain. Missing or incorrect MX records cause email delivery failures.</p>
+    </div>
+  </div>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why do I see different results than my own computer?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "DNS results can vary based on caching and which DNS resolver is being queried. This tool queries authoritative or public resolvers directly, which may differ from your local ISP's cached results."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How long does DNS propagation take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Typically a few minutes to 48 hours, depending on the TTL (time-to-live) set on the record and how widely it has been cached across resolvers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between A and CNAME records?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An A record points a domain directly to an IPv4 address. A CNAME record points a domain to another domain name instead of an IP."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my MX record important?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "MX records tell other mail servers where to deliver email for your domain. Missing or incorrect MX records cause email delivery failures."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:15px;margin-bottom:4px}
+
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6;white-space:normal}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+</style>
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached — resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+async function runLookup() {
+  const domain = document.getElementById('domain').value.trim();
+  const type = document.getElementById('type').value;
+  if (!domain) return;
+  const btn = event.target; const r = document.getElementById('result');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Looking up';
+  r.style.display = 'block'; r.textContent = 'Looking up...';
+  document.getElementById('ai-analyze-btn').style.display = 'none';
+  document.getElementById('ai-result-card').style.display = 'none';
+  const res = await fetch('/api/dns?domain=' + encodeURIComponent(domain) + '&type=' + type);
+  const data = await res.json();
+  btn.disabled = false; btn.textContent = 'Lookup';
+  if (data.error) { r.textContent = 'Error: ' + data.error; return; }
+  r.textContent = (data.results || []).join('\n') || 'No records found';
+  tqInitAIAnalyze({ tool: 'dns', target: domain, getOutput: () => r.textContent });
+}
+</script>
+{{end}}

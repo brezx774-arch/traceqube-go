@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Signing in – TraceQube</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-card" style="text-align:center">
+    <div class="auth-logo">
+      <div class="auth-logo-mark"><svg viewBox="0 0 15 15"><polyline points="2,12 5.5,5 9,9 12,5"/></svg></div>
+      Trace<em>Qube</em>
+    </div>
+    <p style="margin-top:24px;color:var(--muted)">Signing you in...</p>
+  </div>
+</div>
+<script>
+(function() {
+  var hash = window.location.hash;
+  var match = hash.match(/token=([^&]+)/);
+  if (match && match[1]) {
+    localStorage.setItem("tq_token", match[1]);
+    window.location.href = "/dashboard";
+  } else {
+    window.location.href = "/login?error=oauth_failed";
+  }
+})();
+</script>
+</body>
+</html>

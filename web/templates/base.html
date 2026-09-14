@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-title" content="TraceQube" />
+<link rel="manifest" href="/site.webmanifest" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{.Title}}</title>
+  <meta name="description" content="{{.Description}}"/>
+  <link rel="canonical" href="https://traceqube.com{{.Canonical}}"/>
+  <meta property="og:title" content="{{.Title}}"/>
+  <meta property="og:description" content="{{.Description}}"/>
+  <meta property="og:url" content="https://traceqube.com{{.Canonical}}"/>
+  <meta property="og:type" content="website"/>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4KHBXSGVXY"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-4KHBXSGVXY');</script>
+  <script>
+  window.addEventListener('load', function() {
+    var s = document.createElement('script');
+    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3451458173761654';
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    document.head.appendChild(s);
+  });
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=optional" onload="this.onload=null;this.rel='stylesheet'"/>
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500;600&display=optional"/></noscript>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+</head>
+<body>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="/" class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 14 14"><polyline points="2,11 5,5 8,8 11,4"/></svg></div>
+      Trace<span>Qube</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/tools">Tools</a></li>
+      <li><a href="/api-docs">API</a></li>
+      <li><a href="/pricing">Pricing</a></li>
+      <li><a href="/blog">Blog</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌤</button>
+      {{if .LoggedIn}}
+      <a href="https://app.traceqube.com/dashboard"><button class="btn-primary">Dashboard</button></a>
+      {{else}}
+      <a href="https://app.traceqube.com/login" aria-label="Login"><button class="btn-ghost hide-m">Login</button></a>
+      <a href="https://app.traceqube.com/register"><button class="btn-primary">Sign Up Free</button></a>
+      {{end}}
+      <button class="hamburger" id="hamburger" aria-label="Menu">☰</button>
+    </div>
+  </div>
+</nav>
+<main>{{block "content" .}}{{end}}</main>
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <div class="footer-mark"><svg viewBox="0 0 10 10"><polyline points="1,8 3.5,3.5 6,6 8.5,2"/></svg></div>
+      TraceQube
+    </div>
+    <div class="footer-links">
+      <a href="/tools">Tools</a>
+      <a href="/api-docs">API</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/blog">Blog</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/privacy-policy">Privacy</a>
+      <a href="/terms">Terms</a>
+      <a href="/tools/speed-test">Speed Test</a>
+      <a href="/tools/ping-test">Ping Test</a>
+      <a href="/tools/dns-lookup">DNS Lookup</a>
+      <a href="/tools/whois-lookup">Whois Lookup</a>
+      <a href="/tools/port-checker">Port Checker</a>
+      <a href="/tools/reverse-dns">Reverse DNS</a>
+      <a href="/tools/ssl-checker">SSL Checker</a>
+      <a href="/tools/subnet-calculator">Subnet Calculator</a>
+      <a href="/tools/what-is-my-ip">What Is My IP</a>
+      <a href="/tools/http-header-checker">HTTP Header Checker</a>
+      <a href="/tools/triage">Incident Triage (AI)</a>
+      <a href="/blog/internet-protocol-suites">A Comprehensive Guide to Internet Protocol Suites</a>
+      <a href="/blog/ssl-tls-configuration">SSL/TLS Configuration for Secure Web Applications</a>
+      <a href="/blog/tcp-tuning-for-performance">Optimizing Server Response Time with TCP Tuning</a>
+      <a href="/blog/dns-spoofing-prevention">Understanding DNS Spoofing and its Prevention</a>
+    </div>
+    <div class="footer-copy">© 2026 TraceQube</div>
+  </div>
+</footer>
+<script>
+  const html = document.documentElement;
+  const tb = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('tq-theme') || 'dark';
+  html.setAttribute('data-theme', saved);
+  tb.textContent = saved === 'dark' ? '🌤' : '🌙';
+  tb.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('tq-theme', next);
+    tb.textContent = next === 'dark' ? '🌤' : '🌙';
+  });
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+  // Active nav link
+  const path = window.location.pathname;
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    const href = a.getAttribute('href');
+    if (href === path || (href !== '/' && path.startsWith(href))) {
+      a.classList.add('active');
+    }
+  });
+</script>
+</body>
+</html>

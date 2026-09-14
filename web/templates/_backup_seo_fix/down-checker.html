@@ -1,0 +1,183 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+    <div><div class="tool-badge">Tool</div><h1 class="tq-title">Website Down Checker</h1><p class="tq-sub">Check if a website is down for everyone or just you.</p></div>
+  </div>
+  <div class="tq-card">
+    <div class="tq-row">
+      <input class="tq-input" id="url" placeholder="example.com or https://example.com"/>
+      <button class="tq-btn" onclick="runDown()">Check</button>
+    </div>
+  </div>
+  <div class="tq-info-grid" id="result"></div>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+    <h2>Is the Website Down for Everyone or Just Me?</h2>
+    <p>This tool checks whether a website is accessible from our servers. If the tool reports UP but you cannot access it locally, the issue is with your network, ISP, or DNS resolver — not the origin server.</p>
+    <h2>HTTP Status Codes</h2>
+    <p><strong>200</strong> — Site is up and responding normally. <strong>301/302</strong> — Redirect (still up). <strong>403</strong> — Up but blocking requests. <strong>500/503</strong> — Server error. <strong>Timeout</strong> — Site is unreachable.</p>
+  </div>
+</div>
+  <div class="seo-section">
+    <h2>Common Use Cases</h2>
+    <ul>
+      <li><strong>Confirming outages</strong> — check whether a site is down for everyone or just your own connection before troubleshooting further.</li>
+      <li><strong>Incident response</strong> — quickly verify service status when investigating a customer-reported outage.</li>
+      <li><strong>Third-party monitoring</strong> — check the status of external services or APIs your application depends on.</li>
+      <li><strong>Pre-launch checks</strong> — confirm a newly deployed site or service is actually reachable from outside your network.</li>
+    </ul>
+    <h2>Example</h2>
+    <p>Checking a site that returns a connection timeout from multiple vantage points strongly suggests the server itself is down or unreachable, rather than a local network issue on your end.</p>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>What does 'down for everyone' mean?</h3>
+      <p>It means the site failed to respond from our server's vantage point, which is separate from your own network — indicating the problem is likely on the server or hosting side, not your connection.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why might a site be down for me but not others?</h3>
+      <p>This can happen due to local DNS caching issues, ISP-level routing problems, or firewall/network restrictions specific to your connection.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What's a common cause of a site going down?</h3>
+      <p>Server crashes, exceeded resource limits, expired SSL certificates, DNS misconfiguration, or hosting provider outages are all common causes.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does this tool tell me why a site is down?</h3>
+      <p>It confirms reachability, not the root cause. Pair it with an HTTP header check, SSL checker, or DNS lookup to narrow down the specific issue.</p>
+    </div>
+  </div>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does 'down for everyone' mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It means the site failed to respond from our server's vantage point, which is separate from your own network \u2014 indicating the problem is likely on the server or hosting side, not your connection."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why might a site be down for me but not others?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This can happen due to local DNS caching issues, ISP-level routing problems, or firewall/network restrictions specific to your connection."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's a common cause of a site going down?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Server crashes, exceeded resource limits, expired SSL certificates, DNS misconfiguration, or hosting provider outages are all common causes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this tool tell me why a site is down?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It confirms reachability, not the root cause. Pair it with an HTTP header check, SSL checker, or DNS lookup to narrow down the specific issue."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:15px;margin-bottom:4px}
+
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+</style>
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached — resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+async function runDown() {
+  const url = document.getElementById('url').value.trim();
+  if (!url) return;
+  const btn = event.target; const r = document.getElementById('result');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Checking';
+  r.innerHTML = '';
+  document.getElementById('ai-analyze-btn').style.display = 'none';
+  document.getElementById('ai-result-card').style.display = 'none';
+  const res = await fetch('/api/down?url=' + encodeURIComponent(url));
+  const d = await res.json();
+  btn.disabled = false; btn.textContent = 'Check';
+  const color = d.status === 'up' ? 'var(--accent)' : 'var(--danger)';
+  r.innerHTML = `
+    <div class="tq-info-card"><div class="tq-info-label">Status</div><div class="tq-info-value" style="color:${color}">${(d.status||'unknown').toUpperCase()}</div></div>
+    <div class="tq-info-card"><div class="tq-info-label">HTTP Code</div><div class="tq-info-value neutral">${d.status_code || '—'}</div></div>
+    <div class="tq-info-card"><div class="tq-info-label">Response Time</div><div class="tq-info-value neutral">${d.response_ms ? d.response_ms + ' ms' : '—'}</div></div>`;
+  const summary = `Status: ${(d.status||'unknown').toUpperCase()}\nHTTP Code: ${d.status_code || '—'}\nResponse Time: ${d.response_ms ? d.response_ms + ' ms' : '—'}`;
+  tqInitAIAnalyze({ tool: 'down-checker', target: url, getOutput: () => summary });
+}
+</script>
+{{end}}

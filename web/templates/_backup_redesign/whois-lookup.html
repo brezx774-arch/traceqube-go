@@ -1,0 +1,176 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+    <div><div class="tool-badge">Tool</div><h1 class="tq-title">WHOIS Lookup</h1><p class="tq-sub">Look up domain registration, ownership, and expiry information.</p></div>
+  </div>
+  <div class="tq-card">
+    <div class="tq-row">
+      <input class="tq-input" id="domain" placeholder="example.com"/>
+      <button class="tq-btn" onclick="runWhois()">Lookup</button>
+    </div>
+  </div>
+  <pre class="tq-result" id="result" style="display:none"></pre>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+    <h2>What Is a WHOIS Lookup?</h2>
+    <p>WHOIS is a query protocol used to retrieve registration information about domain names. It reveals the registrar, registration and expiry dates, nameservers, and domain status flags.</p>
+    <h2>What WHOIS Reveals</h2>
+    <p><strong>Registrar</strong> — The company where the domain is registered. <strong>Created/Expires</strong> — Registration and expiry dates. <strong>Nameservers</strong> — DNS servers authoritative for the domain. <strong>Status</strong> — Transfer lock and update restrictions.</p>
+
+    <h2>Common Use Cases</h2>
+    <ul>
+      <li><strong>Domain expiry monitoring</strong> — check when a domain is set to expire before it lapses and becomes available for others to register.</li>
+      <li><strong>Ownership verification</strong> — confirm who legally owns a domain before a business transaction or dispute.</li>
+      <li><strong>Competitive research</strong> — check when a competitor's domain was registered or last transferred.</li>
+      <li><strong>Fraud investigation</strong> — look up registration details of a suspicious domain as part of a broader investigation.</li>
+    </ul>
+    <h2>Example</h2>
+    <p>A domain showing an expiry date 20 days away with no auto-renew indicated is at real risk of lapsing — worth flagging immediately if it's a domain you or your business depends on.</p>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>Why don't I see the owner's name or contact info?</h3>
+      <p>Most registrars now offer WHOIS privacy protection by default, which masks personal registrant details behind the registrar's own proxy contact information.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What happens if a domain expires?</h3>
+      <p>It typically enters a grace period, then a redemption period with extra fees to reclaim it, and finally becomes publicly available for anyone to register.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What do nameservers in WHOIS tell me?</h3>
+      <p>They show which DNS provider is managing the domain's records, which can indicate the hosting setup even before doing a full DNS lookup.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can WHOIS data be inaccurate?</h3>
+      <p>Yes — registrants aren't always required to keep information current, and some registrars cache WHOIS data, so it may lag behind recent changes.</p>
+    </div>
+  </div>
+  </div>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why don't I see the owner's name or contact info?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most registrars now offer WHOIS privacy protection by default, which masks personal registrant details behind the registrar's own proxy contact information."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if a domain expires?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It typically enters a grace period, then a redemption period with extra fees to reclaim it, and finally becomes publicly available for anyone to register."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What do nameservers in WHOIS tell me?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They show which DNS provider is managing the domain's records, which can indicate the hosting setup even before doing a full DNS lookup."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can WHOIS data be inaccurate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes \u2014 registrants aren't always required to keep information current, and some registrars cache WHOIS data, so it may lag behind recent changes."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:15px;margin-bottom:4px}
+
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+</style>
+
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached \u2014 resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+async function runWhois() {
+  const domain = document.getElementById('domain').value.trim();
+  if (!domain) return;
+  const btn = event.target; const r = document.getElementById('result');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Looking up';
+  r.style.display = 'block'; document.getElementById('ai-analyze-btn').style.display='none'; document.getElementById('ai-result-card').style.display='none'; r.textContent = 'Looking up...';
+  const res = await fetch('/api/whois?domain=' + encodeURIComponent(domain));
+  const data = await res.json();
+  btn.disabled = false; btn.textContent = 'Lookup';
+  r.textContent = data.error ? 'Error: ' + data.error : data.result;
+  tqInitAIAnalyze({ tool: 'whois', target: domain, getOutput: () => r.textContent });
+}
+</script>
+{{end}}

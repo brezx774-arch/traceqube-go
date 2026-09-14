@@ -1,0 +1,178 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+    <div><div class="tool-badge">Tool</div><h1 class="tq-title">Port Checker</h1><p class="tq-sub">Check if a TCP port is open or closed on any host.</p></div>
+  </div>
+  <div class="tq-card">
+    <div class="tq-row">
+      <input class="tq-input" id="host" placeholder="example.com or IP" style="flex:2"/>
+      <input class="tq-input" id="port" placeholder="443" style="flex:1;min-width:80px"/>
+      <button class="tq-btn" onclick="runPort()">Check</button>
+    </div>
+  </div>
+  <pre class="tq-result" id="result" style="display:none"></pre>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+    <h2>What Is a Port Checker?</h2>
+    <p>A port checker tests whether a specific TCP port on a remote host is open and accepting connections. Common ports: <strong>22</strong> (SSH), <strong>80</strong> (HTTP), <strong>443</strong> (HTTPS), <strong>3306</strong> (MySQL), <strong>5432</strong> (PostgreSQL).</p>
+    <h2>Open vs Closed</h2>
+    <p><strong>Open</strong> — The port is reachable and a service is listening. <strong>Closed</strong> — The host is reachable but nothing is listening on that port. <strong>Filtered</strong> — A firewall is blocking the connection.</p>
+
+    <h2>Common Use Cases</h2>
+    <ul>
+      <li><strong>Firewall verification</strong> — confirm a port you just opened is actually reachable from outside your network.</li>
+      <li><strong>Security audits</strong> — check for unintentionally exposed services like databases or admin panels running on non-standard ports.</li>
+      <li><strong>Service deployment checks</strong> — verify a newly deployed application (e.g. on port 3000, 8080) is accessible before going live.</li>
+      <li><strong>VPN/proxy configuration</strong> — confirm required ports for VPN protocols (e.g. 1194 for OpenVPN) are open and not blocked by an ISP or firewall.</li>
+    </ul>
+    <h2>Example</h2>
+    <p>Checking port 5432 (PostgreSQL's default) and finding it open to the public internet is a common and serious misconfiguration — database ports should typically be firewalled to specific IPs only.</p>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>What does 'filtered' mean versus 'closed'?</h3>
+      <p>Closed means the port actively refused the connection. Filtered means no response was received at all, usually because a firewall is silently dropping the traffic.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is it safe to leave any ports open?</h3>
+      <p>Only ports required for services you intend to expose publicly (e.g. 80/443 for a web server) should be open. Everything else should be firewalled by default.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why is my port closed even though the service is running?</h3>
+      <p>This usually means a firewall (on the server itself, a cloud provider's security group, or your router) is blocking external access to that port.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What ports are commonly targeted by attackers?</h3>
+      <p>22 (SSH), 3389 (RDP), 3306/5432 (databases), and 23 (Telnet) are frequently scanned and targeted if left exposed without proper authentication.</p>
+    </div>
+  </div>
+  </div>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does 'filtered' mean versus 'closed'?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Closed means the port actively refused the connection. Filtered means no response was received at all, usually because a firewall is silently dropping the traffic."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it safe to leave any ports open?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only ports required for services you intend to expose publicly (e.g. 80/443 for a web server) should be open. Everything else should be firewalled by default."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is my port closed even though the service is running?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This usually means a firewall (on the server itself, a cloud provider's security group, or your router) is blocking external access to that port."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What ports are commonly targeted by attackers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "22 (SSH), 3389 (RDP), 3306/5432 (databases), and 23 (Telnet) are frequently scanned and targeted if left exposed without proper authentication."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:15px;margin-bottom:4px}
+
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+</style>
+
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached \u2014 resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+async function runPort() {
+  const host = document.getElementById('host').value.trim();
+  const port = document.getElementById('port').value.trim();
+  if (!host || !port) return;
+  const btn = event.target; const r = document.getElementById('result');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Checking';
+  r.style.display = 'block'; document.getElementById('ai-analyze-btn').style.display='none'; document.getElementById('ai-result-card').style.display='none'; r.textContent = 'Checking...';
+  const res = await fetch('/api/port?host=' + encodeURIComponent(host) + '&port=' + encodeURIComponent(port));
+  const data = await res.json();
+  btn.disabled = false; btn.textContent = 'Check';
+  r.textContent = data.error ? 'Error: ' + data.error : 'host:   ' + data.host + '\nport:   ' + data.port + '/tcp\nstatus: ' + data.status.toUpperCase() + '\n\n' + data.message;
+  tqInitAIAnalyze({ tool: 'port-checker', target: host + ':' + port, getOutput: () => r.textContent });
+}
+</script>
+{{end}}

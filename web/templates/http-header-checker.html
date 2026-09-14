@@ -1,0 +1,185 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h8"/></svg></div>
+    <div><div class="tool-badge">Tool</div><h1 class="tq-title">HTTP Header Checker</h1><p class="tq-sub">Inspect HTTP response headers for any URL.</p></div>
+  </div>
+  <div class="tq-card">
+    <div class="tq-row">
+      <input class="tq-input" id="url" placeholder="https://example.com"/>
+      <button class="tq-btn" onclick="runHeaders()">Fetch Headers</button>
+    </div>
+  </div>
+  <pre class="tq-result" id="result" style="display:none"></pre>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+    <h2>What Are HTTP Headers?</h2>
+    <p>HTTP headers are key-value pairs sent between client and server with every request and response. They carry metadata about content type, caching policies, security settings, and encoding.</p>
+    <h2>Important Security Headers</h2>
+    <div class="def-grid">
+      <div class="def-item"><span class="def-term">Strict-Transport-Security</span><span class="def-desc">Forces HTTPS connections.</span></div>
+      <div class="def-item"><span class="def-term">X-Frame-Options</span><span class="def-desc">Prevents clickjacking.</span></div>
+      <div class="def-item"><span class="def-term">Content-Security-Policy</span><span class="def-desc">Controls resource loading to reduce XSS risk.</span></div>
+      <div class="def-item"><span class="def-term">X-Content-Type-Options</span><span class="def-desc">Prevents MIME sniffing attacks.</span></div>
+    </div>
+    <h2>Common Use Cases</h2>
+    <ul>
+      <li><strong>Security auditing</strong> — check for missing security headers like HSTS, CSP, and X-Frame-Options that leave a site exposed to common attacks.</li>
+      <li><strong>Debugging caching issues</strong> — inspect Cache-Control and ETag headers to understand why content isn't updating as expected.</li>
+      <li><strong>Verifying server configuration</strong> — confirm which web server or technology stack a site is running based on returned headers.</li>
+      <li><strong>CDN/proxy verification</strong> — check headers like CF-Ray or X-Served-By to confirm traffic is passing through a CDN as expected.</li>
+    </ul>
+    <h2>Example</h2>
+    <div class="example-callout">
+      <p>A response missing <code>Strict-Transport-Security</code> and <code>X-Content-Type-Options</code> headers indicates the site is vulnerable to protocol downgrade and MIME-sniffing attacks — both fixable with a few server config lines.</p>
+    </div>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>What are the most important security headers?</h3>
+      <p>Strict-Transport-Security (HSTS), Content-Security-Policy (CSP), X-Frame-Options, and X-Content-Type-Options are widely considered baseline security headers.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why don't I see a Server header?</h3>
+      <p>Many servers are configured to hide or obscure this header intentionally, as a minor security-through-obscurity measure.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What does Cache-Control tell me?</h3>
+      <p>It defines how long browsers and proxies should cache a response, which directly affects how quickly your users see updated content.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can headers reveal my tech stack?</h3>
+      <p>Yes — headers like X-Powered-By or Server often reveal the underlying framework or server software, which is why many production sites strip them.</p>
+    </div>
+  </div>
+  </div>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What are the most important security headers?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Strict-Transport-Security (HSTS), Content-Security-Policy (CSP), X-Frame-Options, and X-Content-Type-Options are widely considered baseline security headers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why don't I see a Server header?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Many servers are configured to hide or obscure this header intentionally, as a minor security-through-obscurity measure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does Cache-Control tell me?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It defines how long browsers and proxies should cache a response, which directly affects how quickly your users see updated content."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can headers reveal my tech stack?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes \u2014 headers like X-Powered-By or Server often reveal the underlying framework or server software, which is why many production sites strip them."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:15px;margin-bottom:4px}
+
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+</style>
+
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached \u2014 resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+async function runHeaders() {
+  const url = document.getElementById('url').value.trim();
+  if (!url) return;
+  const btn = event.target; const r = document.getElementById('result');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Fetching';
+  r.style.display = 'block'; document.getElementById('ai-analyze-btn').style.display='none'; document.getElementById('ai-result-card').style.display='none'; r.textContent = 'Fetching headers...';
+  const res = await fetch('/api/http-headers?url=' + encodeURIComponent(url));
+  const data = await res.json();
+  btn.disabled = false; btn.textContent = 'Fetch Headers';
+  if (data.error) { r.textContent = 'Error: ' + data.error; return; }
+  let out = 'status: ' + data.status + '\n\n';
+  Object.entries(data.headers || {}).sort().forEach(([k, v]) => { out += k + ': ' + v + '\n'; });
+  r.textContent = out;
+  tqInitAIAnalyze({ tool: 'http-headers', target: url, getOutput: () => r.textContent });
+}
+</script>
+{{end}}

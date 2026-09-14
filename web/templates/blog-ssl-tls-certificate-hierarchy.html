@@ -1,0 +1,51 @@
+{{define "content"}}
+<div class="container">
+  <div class="blog-article">
+    <a href="/blog" class="back-link">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L4 6l4 4"/></svg>
+      All posts
+    </a>
+    <div class="blog-tag" style="margin-top:20px">Security</div>
+    <h1>A Deep Dive into SSL/TLS Certificate Hierarchy and Trust Chains</h1>
+    <div class="meta"><span>August 23, 2026</span><span>5 min read</span></div>
+    <p>When it comes to online security, <strong>SSL/TLS certificates</strong> play a crucial role in establishing trust between a website and its users. In this blog post, we'll delve into the intricacies of the <strong>SSL/TLS certificate hierarchy</strong> and explore the concept of <strong>trust chains</strong>. Understanding these concepts is essential for network administrators, security professionals, and anyone responsible for maintaining the security of online systems.</p>
+<h2>The Basics of SSL/TLS Certificates</h2>
+<p>SSL/TLS certificates are digital documents that authenticate a website's identity and enable secure communication between a user's browser and the website. These certificates contain information such as the website's domain name, organization name, and public key. When a user accesses a website over HTTPS, their browser verifies the certificate by checking its validity, ensuring it hasn't expired, and that it's issued by a trusted Certificate Authority (CA).</p>
+<h2>The SSL/TLS Certificate Hierarchy</h2>
+<p>The <strong>SSL/TLS certificate hierarchy</strong> is a hierarchical structure that defines the relationship between a website's certificate and the CA that issued it. The hierarchy consists of the following components:</p>
+<ul>
+  <li><strong>Root Certificate Authority (CA)</strong>: The highest level in the hierarchy, a Root CA is a trusted entity responsible for issuing certificates to intermediate CAs.</li>
+  <li><strong>Intermediate Certificate Authority (CA)</strong>: An intermediate CA is a trusted entity that issues certificates to end-entity CAs. Intermediate CAs are often used to separate the Root CA from the end-entity certificates.</li>
+  <li><strong>End-Entity Certificate</strong>: Also known as a leaf certificate, an end-entity certificate is issued directly to a website or organization and contains the public key and identity information.</li>
+</ul>
+<h2>Trust Chains</h2>
+<p>A <strong>trust chain</strong> is the process of verifying a website's certificate by following the hierarchy of certificates from the end-entity certificate to the Root CA. This involves checking the certificate's validity, ensuring it's issued by a trusted CA, and verifying the CA's chain of trust. A trust chain is composed of multiple certificates, with each certificate in the chain referencing the previous one in a hierarchical manner.</p>
+<p>Here's an example of a trust chain:</p>
+<p>Website: example.com</p>
+<p>End-Entity Certificate (example.com): issued by Intermediate CA (Example Intermediate CA)</p>
+<p>Intermediate Certificate (Example Intermediate CA): issued by Root CA (Example Root CA)</p>
+<p>Root Certificate (Example Root CA): Self-signed</p>
+<p>In this example, the browser verifies the website's certificate by following the trust chain:</p>
+<ol>
+<li>Verifies the end-entity certificate (example.com) is issued by Example Intermediate CA</li>
+<li>Verifies the intermediate certificate (Example Intermediate CA) is issued by Example Root CA</li>
+<li>Verifies the root certificate (Example Root CA) is self-signed and trusted</li>
+</ol>
+<h2>Practical Examples</h2>
+<p>Let's consider a real-world example to illustrate the importance of trust chains. Suppose you visit a website, <a href="https://www.example.com">www.example.com</a>, which uses a certificate issued by an intermediate CA called "Example Intermediate CA." If the intermediate CA's certificate is not trusted by your browser, the trust chain will break, and the browser will display an error message.</p>
+<p>Here's an example of how this might look in a browser:</p>
+<p>Erroneous trust chain:</p>
+<p>Website: <a href="https://www.example.com">www.example.com</a></p>
+<p>End-Entity Certificate (example.com): issued by Intermediate CA (Example Intermediate CA)</p>
+<p>Intermediate Certificate (Example Intermediate CA): not trusted</p>
+<p>Root Certificate (Example Root CA): not trusted</p>
+<p>Browser error: "The certificate chain was not trusted by the peer."</p>
+<h2>Conclusion</h2>
+<p>In conclusion, the <strong>SSL/TLS certificate hierarchy</strong> and <strong>trust chains</strong> are essential concepts in online security. Understanding how these components work together is crucial for maintaining the security of online systems and ensuring the trust between websites and their users. By following the trust chain and verifying the certificates at each level, browsers can ensure the authenticity and security of online communication.</p>
+<p>At TraceQube, we're committed to providing you with the knowledge and tools you need to stay ahead in the world of network diagnostics and security. Stay tuned for more in-depth articles and expert insights on the latest security trends and technologies.</p>
+    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border)">
+      <a href="/tools"><button class="btn-lg primary">Explore All Tools</button></a>
+    </div>
+  </div>
+</div>
+{{end}}

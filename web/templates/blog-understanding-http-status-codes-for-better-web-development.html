@@ -1,0 +1,141 @@
+{{define "content"}}
+<div class="container">
+  <div class="blog-article">
+    <a href="/blog" class="back-link">
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2L4 6l4 4"/></svg>
+      All posts
+    </a>
+    <div class="blog-tag" style="margin-top:20px">Developer</div>
+    <h1>Understanding HTTP Status Codes for Better Web Development</h1>
+    <div class="meta"><span>August 21, 2026</span><span>5 min read</span></div>
+    <p>Understanding HTTP Status Codes for Better Web Development</p>
+<p>As web developers, we often encounter HTTP status codes in our daily work, but do we truly understand their implications? HTTP status codes are crucial for determining the outcome of a web request and are essential for building robust web applications. In this article, we will delve into the world of HTTP status codes, exploring their types, meanings, and best practices for handling them in web development.</p>
+<h3>What are HTTP Status Codes?</h3>
+<p>HTTP status codes are three-digit numbers returned by a server in response to a client's request. They convey information about the outcome of the request, such as success, failure, or redirection. Status codes can be broadly categorized into five groups, each with its own set of codes:</p>
+<h4>1xx: Informational Responses</h4>
+<ul>
+<li>100: Continue</li>
+<li>101: Switching Protocols</li>
+</ul>
+<p>These status codes indicate that the request has been received and the server is processing it. However, they do not guarantee a successful outcome.</p>
+<h4>2xx: Successful Responses</h4>
+<ul>
+<li>200: OK</li>
+<li>201: Created</li>
+<li>202: Accepted</li>
+</ul>
+<p>These status codes indicate that the request has been successfully processed. The 201 code is often used for resource creation, while the 202 code is used for asynchronous processing.</p>
+<h4>3xx: Redirections</h4>
+<ul>
+<li>300: Multiple Choices</li>
+<li>301: Moved Permanently</li>
+<li>302: Found</li>
+<li>303: See Other</li>
+<li>304: Not Modified</li>
+<li>307: Temporary Redirect</li>
+</ul>
+<p>These status codes indicate that the requested resource has been moved to a different location. The client should follow the redirect to access the resource.</p>
+<h4>4xx: Client Errors</h4>
+<ul>
+<li>400: Bad Request</li>
+<li>401: Unauthorized</li>
+<li>403: Forbidden</li>
+<li>404: Not Found</li>
+<li>405: Method Not Allowed</li>
+</ul>
+<p>These status codes indicate that the client has made an error in the request. This can be due to incorrect syntax, authentication issues, or invalid requests.</p>
+<h4>5xx: Server Errors</h4>
+<ul>
+<li>500: Internal Server Error</li>
+<li>501: Not Implemented</li>
+<li>502: Bad Gateway</li>
+<li>503: Service Unavailable</li>
+<li>504: Gateway Timeout</li>
+</ul>
+<p>These status codes indicate that the server has encountered an error in processing the request. This can be due to internal server errors, software bugs, or external dependencies.</p>
+<h3>Practical Examples</h3>
+<p>Let's consider a few scenarios to illustrate the use of HTTP status codes:</p>
+<ol>
+<li><strong>Successful Response</strong></li>
+</ol>
+<p>Client sends a GET request to <code>http://example.com/api/users</code>. The server processes the request and returns a 200 status code with the list of users.</p>
+<pre><code class="language-bash">GET /api/users HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 200 OK
+Content-Type: application/json
+{
+  &quot;users&quot;: [
+    {&quot;id&quot;: 1, &quot;name&quot;: &quot;John Doe&quot;},
+    {&quot;id&quot;: 2, &quot;name&quot;: &quot;Jane Doe&quot;}
+  ]
+}
+</code></pre>
+<ol start="2">
+<li><strong>Redirect</strong></li>
+</ol>
+<p>Client sends a GET request to <code>http://example.com/api/users</code>. The server redirects the client to <code>http://api.example.com/users</code> with a 301 status code.</p>
+<pre><code class="language-bash">GET /api/users HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 301 Moved Permanently
+Location: http://api.example.com/users
+</code></pre>
+<ol start="3">
+<li><strong>Client Error</strong></li>
+</ol>
+<p>Client sends a GET request to <code>http://example.com/api/users</code> with an invalid query parameter. The server returns a 400 status code.</p>
+<pre><code class="language-bash">GET /api/users?age=abc HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 400 Bad Request
+Content-Type: text/plain
+Bad Request
+</code></pre>
+<ol start="4">
+<li><strong>Server Error</strong></li>
+</ol>
+<p>Client sends a GET request to <code>http://example.com/api/users</code>, but the server is down. The server returns a 503 status code.</p>
+<pre><code class="language-bash">GET /api/users HTTP/1.1
+Host: example.com
+Accept: application/json
+
+HTTP/1.1 503 Service Unavailable
+Content-Type: text/plain
+Service Unavailable
+</code></pre>
+<h3>Handling HTTP Status Codes in Web Development</h3>
+<p>When handling HTTP status codes, it's essential to:</p>
+<ul>
+<li>
+<p><strong>Use a consistent error handling strategy</strong>: Implement a consistent way of handling errors across your application to ensure a smooth user experience.</p>
+</li>
+<li>
+<p><strong>Log and monitor status codes</strong>: Log and monitor HTTP status codes to identify and troubleshoot issues early on.</p>
+</li>
+<li>
+<p><strong>Provide clear error messages</strong>: Provide clear and concise error messages to help users understand the issue and take corrective action.</p>
+</li>
+<li>
+<p><strong>Implement caching and rate limiting</strong>: Implement caching and rate limiting to prevent abuse and reduce the load on your server.</p>
+</li>
+</ul>
+<p>In conclusion, HTTP status codes are a crucial aspect of web development, and understanding their types, meanings, and best practices is essential for building robust web applications. By following the guidelines outlined in this article, you can improve your web development skills and create better user experiences for your users.</p>
+<h3>Best Practices for Error Handling</h3>
+<ul>
+<li>Use a consistent error handling strategy across your application.</li>
+<li>Log and monitor HTTP status codes to identify and troubleshoot issues early on.</li>
+<li>Provide clear and concise error messages to help users understand the issue.</li>
+<li>Implement caching and rate limiting to prevent abuse and reduce the load on your server.</li>
+</ul>
+<h3>Conclusion</h3>
+<p>HTTP status codes play a vital role in determining the outcome of a web request. By understanding their types, meanings, and best practices, web developers can create better user experiences and improve the overall quality of their applications. In this article, we explored the different types of HTTP status codes, provided practical examples, and outlined best practices for handling them in web development.</p>
+    <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border)">
+      <a href="/tools"><button class="btn-lg primary">Explore All Tools</button></a>
+    </div>
+  </div>
+</div>
+{{end}}

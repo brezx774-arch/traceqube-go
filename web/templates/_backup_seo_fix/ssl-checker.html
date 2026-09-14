@@ -1,0 +1,184 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+    <div><div class="tool-badge">Tool</div><h1 class="tq-title">SSL Certificate Checker</h1><p class="tq-sub">Verify SSL certificate validity, expiry date, issuer, and TLS version.</p></div>
+  </div>
+  <div class="tq-card">
+    <div class="tq-row">
+      <input class="tq-input" id="domain" placeholder="example.com"/>
+      <button class="tq-btn" onclick="runSSL()">Check SSL</button>
+    </div>
+  </div>
+  <div class="tq-info-grid" id="result"></div>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+    <h2>What Is an SSL Certificate?</h2>
+    <p>An SSL/TLS certificate authenticates a website's identity and enables encrypted
+HTTPS connections. Expired or invalid certificates trigger browser security warnings and can hurt SEO rankings.</p>
+    <h2>What to Check</h2>
+    <p><strong>Expiry date</strong> — Certificates expire after 90 days (Let's Encrypt) or up to 1 year. <strong>Issuer</strong> — The Certificate Authority that issued the cert. <strong>TLS version</strong> — TLSv1.3 is the current standard. Avoid TLSv1.0 and
+TLSv1.1.</p>
+  </div>
+</div>
+  <div class="seo-section">
+    <h2>Common Use Cases</h2>
+    <ul>
+      <li><strong>Expiry monitoring</strong> — catch certificates approaching expiration before they cause browser warnings or outages.</li>
+      <li><strong>Chain validation</strong> — confirm intermediate certificates are properly configured, since missing links cause errors on some browsers/devices even when the cert appears valid on others.</li>
+      <li><strong>Post-renewal verification</strong> — confirm a newly renewed or reissued certificate deployed correctly after an update.</li>
+      <li><strong>Third-party/vendor checks</strong> — verify the SSL configuration of an API or service you integrate with before troubleshooting connection failures.</li>
+    </ul>
+    <h2>Example</h2>
+    <p>A certificate expiring in 12 days with a valid chain and strong TLS 1.3 support is healthy today but needs renewal scheduled now — most outages from expired certs are avoidable with a 30-day expiry alert.</p>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>What happens when an SSL certificate expires?</h3>
+      <p>Browsers will show a security warning and typically block users from proceeding, effectively taking your site offline for most visitors until it's renewed.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is a certificate chain issue?</h3>
+      <p>It means the server isn't sending the full chain of intermediate certificates needed for browsers to verify trust up to a recognized root authority — a very common misconfiguration.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is a self-signed certificate a problem?</h3>
+      <p>For public-facing production sites, yes — browsers won't trust it and will show warnings. Self-signed certs are fine for internal/development use only.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How often should I renew my SSL certificate?</h3>
+      <p>Most modern certificates (like Let's Encrypt) are valid for 90 days and are usually configured to auto-renew. Manually issued certificates can be valid for up to a year or more.</p>
+    </div>
+  </div>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What happens when an SSL certificate expires?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Browsers will show a security warning and typically block users from proceeding, effectively taking your site offline for most visitors until it's renewed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a certificate chain issue?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It means the server isn't sending the full chain of intermediate certificates needed for browsers to verify trust up to a recognized root authority \u2014 a very common misconfiguration."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a self-signed certificate a problem?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For public-facing production sites, yes \u2014 browsers won't trust it and will show warnings. Self-signed certs are fine for internal/development use only."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How often should I renew my SSL certificate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most modern certificates (like Let's Encrypt) are valid for 90 days and are usually configured to auto-renew. Manually issued certificates can be valid for up to a year or more."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:15px;margin-bottom:4px}
+
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+</style>
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached — resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+async function runSSL() {
+  const domain = document.getElementById('domain').value.trim();
+  if (!domain) return;
+  const btn = event.target; const r = document.getElementById('result');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Checking';
+  r.innerHTML = '';
+  document.getElementById('ai-analyze-btn').style.display = 'none';
+  document.getElementById('ai-result-card').style.display = 'none';
+  const res = await fetch('/api/ssl?domain=' + encodeURIComponent(domain));
+  const d = await res.json();
+  btn.disabled = false; btn.textContent = 'Check SSL';
+  if (d.error) { r.innerHTML = '<pre class="tq-result">Error: ' + d.error + '</pre>'; return; }
+  const color = d.valid ? 'var(--accent)' : 'var(--danger)';
+  const fields = [['Status', d.valid ? 'Valid' : 'Invalid', color], ['Issuer', d.issuer, ''], ['Expires', d.expires, ''], ['Days Left', d.days_left, color], ['Issued', d.issued, ''], ['Subject', d.subject, '']];
+  r.innerHTML = fields.map(([l, v, c]) => `<div class="tq-info-card"><div class="tq-info-label">${l}</div><div class="tq-info-value" ${c ? 'style="color:' + c + '"' : 'class="neutral"'}>${v || '—'}</div></div>`).join('');
+  const summary = fields.map(([l, v]) => l + ': ' + (v || '—')).join('\n');
+  tqInitAIAnalyze({ tool: 'ssl', target: domain, getOutput: () => summary });
+}
+</script>
+{{end}}

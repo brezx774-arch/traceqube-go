@@ -1,0 +1,183 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="6"
+height="6" rx="1"/><rect x="16" y="7" width="6" height="6" rx="1"/><rect x="9" y="14" width="6" height="6" rx="1"/><path d="M5 13v3h14v-3M12 13v1"/></svg></div>
+    <div><div class="tool-badge">Tool</div><h1 class="tq-title">Subnet Calculator</h1><p class="tq-sub">Calculate network address, broadcast, and usable IP ranges from CIDR notation.</p></div>
+  </div>
+  <div class="tq-card">
+    <div class="tq-row">
+      <input class="tq-input" id="cidr" placeholder="192.168.1.0/24"/>
+      <button class="tq-btn" onclick="runSubnet()">Calculate</button>
+    </div>
+  </div>
+  <div class="tq-info-grid" id="result"></div>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+    <h2>What Is a Subnet Calculator?</h2>
+    <p>A subnet calculator computes network addressing details from CIDR (Classless Inter-Domain Routing) notation. Subnetting divides a large IP address space into smaller,
+more manageable sub-networks.</p>
+    <h2>Common CIDR Ranges</h2>
+    <p><strong>/32</strong> — Single host. <strong>/30</strong> — 2 usable hosts (point-to-point links). <strong>/24</strong> — 254 usable hosts (typical LAN). <strong>/16</strong> — 65,534 usable hosts. <strong>/8</strong> — 16 million hosts.</p>
+  </div>
+</div>
+  <div class="seo-section">
+    <h2>Common Use Cases</h2>
+    <ul>
+      <li><strong>Network planning</strong> — determine how many usable IP addresses a subnet provides before allocating it to a department or VLAN.</li>
+      <li><strong>Cloud VPC design</strong> — plan non-overlapping subnet ranges when setting up cloud infrastructure across multiple availability zones.</li>
+      <li><strong>Troubleshooting connectivity</strong> — verify whether two devices are actually on the same subnet when diagnosing local network communication issues.</li>
+      <li><strong>Documentation</strong> — quickly generate network/broadcast addresses and host ranges for network diagrams.</li>
+    </ul>
+    <h2>Example</h2>
+    <p>A /24 subnet (255.255.255.0) provides 254 usable host addresses — suitable for a single office or rack — while a /16 provides over 65,000, more appropriate for a large enterprise or cloud VPC.</p>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>What's the difference between network and broadcast address?</h3>
+      <p>The network address identifies the subnet itself and can't be assigned to a device. The broadcast address is used to send data to every device on that subnet simultaneously — also not assignable.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How many usable hosts does a /30 provide?</h3>
+      <p>A /30 provides 4 total addresses, 2 of which are usable for hosts (network and broadcast take the other 2) — commonly used for point-to-point links.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is CIDR notation?</h3>
+      <p>CIDR (e.g. /24) is a shorthand for expressing how many bits of an IP address are used for the network portion, which determines subnet size.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why do cloud providers reserve extra IPs per subnet?</h3>
+      <p>Providers like AWS reserve a handful of addresses per subnet (beyond network/broadcast) for internal routing and DNS purposes, slightly reducing usable host count.</p>
+    </div>
+  </div>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What's the difference between network and broadcast address?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The network address identifies the subnet itself and can't be assigned to a device. The broadcast address is used to send data to every device on that subnet simultaneously \u2014 also not assignable."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many usable hosts does a /30 provide?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A /30 provides 4 total addresses, 2 of which are usable for hosts (network and broadcast take the other 2) \u2014 commonly used for point-to-point links."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is CIDR notation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "CIDR (e.g. /24) is a shorthand for expressing how many bits of an IP address are used for the network portion, which determines subnet size."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do cloud providers reserve extra IPs per subnet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Providers like AWS reserve a handful of addresses per subnet (beyond network/broadcast) for internal routing and DNS purposes, slightly reducing usable host count."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:15px;margin-bottom:4px}
+
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+</style>
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached — resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+async function runSubnet() {
+  const cidr = document.getElementById('cidr').value.trim();
+  if (!cidr) return;
+  const btn = event.target; const r = document.getElementById('result');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Calculating';
+  r.innerHTML = '';
+  document.getElementById('ai-analyze-btn').style.display = 'none';
+  document.getElementById('ai-result-card').style.display = 'none';
+  const res = await fetch('/api/subnet?cidr=' + encodeURIComponent(cidr));
+  const d = await res.json();
+  btn.disabled = false; btn.textContent = 'Calculate';
+  if (d.error) { r.innerHTML = '<pre class="tq-result">Error: ' + d.error + '</pre>'; return; }
+  const fields = [['Network', d.network], ['Broadcast', d.broadcast], ['Subnet Mask', d.subnet_mask], ['First Host', d.first_host], ['Last Host', d.last_host], ['Usable Hosts', d.total_hosts], ['Prefix Length', '/' + d.prefix_length]];
+  r.innerHTML = fields.map(([l,v]) => `<div class="tq-info-card"><div class="tq-info-label">${l}</div><div class="tq-info-value">${v || '—'}</div></div>`).join('');
+  const summary = fields.map(([l,v]) => l + ': ' + (v || '—')).join('\n');
+  tqInitAIAnalyze({ tool: 'subnet', target: cidr, getOutput: () => summary });
+}
+</script>
+{{end}}

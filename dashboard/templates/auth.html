@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login – TraceQube</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/static/css/main.css"/>
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <div class="auth-logo-mark"><svg viewBox="0 0 15 15"><polyline points="2,12 5.5,5 9,9 12,5"/></svg></div>
+      Trace<em>Qube</em>
+    </div>
+    <div class="auth-subtitle">Developer API Dashboard</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="loginTab" onclick="showTab('login')">Login</button>
+      <button class="auth-tab" id="registerTab" onclick="showTab('register')">Register</button>
+    </div>
+    <div class="oauth-buttons" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+      <a href="https://api.traceqube.com/auth/google" class="btn btn-ghost" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
+        <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
+        Continue with Google
+      </a>
+      <a href="https://api.traceqube.com/auth/github" class="btn btn-ghost" style="width:100%;display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 2.07-.01 2.36 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        Continue with GitHub
+      </a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+      <span style="font-size:0.75rem;color:var(--muted)">or</span>
+      <div style="flex:1;height:1px;background:var(--border)"></div>
+    </div>
+    <div id="alertBox"></div>
+    <div id="loginForm">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="input" type="email" id="loginEmail" placeholder="you@example.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="input" type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="doLogin()">Login</button>
+      <p style="text-align:center;margin-top:16px;font-size:0.78rem;color:var(--muted)">
+        <a href="/forgot-password" style="color:var(--accent)">Forgot password?</a>
+      </p>
+    </div>
+    <div id="registerForm" style="display:none">
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="input" type="email" id="regEmail" placeholder="you@example.com"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="input" type="password" id="regPassword" placeholder="Min 8 characters"/>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="doRegister()">Create Account</button>
+    </div>
+    <div style="text-align:center;margin-top:24px">
+      <a href="https://traceqube.com" style="font-size:0.78rem;color:var(--muted)">← Back to TraceQube</a>
+    </div>
+  </div>
+</div>
+<script>
+const API = "https://api.traceqube.com";
+function showTab(tab) {
+  document.getElementById("loginForm").style.display = tab === "login" ? "block" : "none";
+  document.getElementById("registerForm").style.display = tab === "register" ? "block" : "none";
+  document.getElementById("loginTab").className = "auth-tab" + (tab === "login" ? " active" : "");
+  document.getElementById("registerTab").className = "auth-tab" + (tab === "register" ? " active" : "");
+}
+function showAlert(msg, type) {
+  document.getElementById("alertBox").innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
+}
+async function doLogin() {
+  var email = document.getElementById("loginEmail").value.trim();
+  var pass = document.getElementById("loginPassword").value;
+  if (!email || !pass) return showAlert("Please fill all fields", "error");
+  var btn = document.querySelector("#loginForm .btn-primary");
+  btn.innerHTML = '<span class="spinner"></span> Logging in'; btn.disabled = true;
+  var res = await fetch(API+"/api/login", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,password:pass})});
+  var data = await res.json();
+  btn.textContent = "Login"; btn.disabled = false;
+  if (data.error) return showAlert(data.error, "error");
+  localStorage.setItem("tq_token", data.token);
+  window.location.href = "/dashboard";
+}
+async function doRegister() {
+  var email = document.getElementById("regEmail").value.trim();
+  var pass = document.getElementById("regPassword").value;
+  if (!email || !pass) return showAlert("Please fill all fields", "error");
+  if (pass.length < 8) return showAlert("Password must be at least 8 characters", "error");
+  var btn = document.querySelector("#registerForm .btn-primary");
+  btn.innerHTML = '<span class="spinner"></span> Creating account'; btn.disabled = true;
+  var res = await fetch(API+"/api/register", {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,password:pass})});
+  var data = await res.json();
+  btn.textContent = "Create Account"; btn.disabled = false;
+  if (data.error) return showAlert(data.error, "error");
+  showAlert("Account created! Please check your email to verify.", "success");
+  showTab("login");
+}
+var saved = localStorage.getItem("tq-theme") || "dark";
+document.documentElement.setAttribute("data-theme", saved);
+if (localStorage.getItem("tq_token")) window.location.href = "/dashboard";
+showTab("login");
+</script>
+</body>
+</html>

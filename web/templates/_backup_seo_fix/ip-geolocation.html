@@ -1,0 +1,184 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+    <div><div class="tool-badge">Tool</div><h1 class="tq-title">IP Geolocation</h1><p class="tq-sub">Look up the location, ISP, and ASN of any IP address.</p></div>
+  </div>
+  <div class="tq-card">
+    <div class="tq-row">
+      <input class="tq-input" id="ip" placeholder="8.8.8.8"/>
+      <button class="tq-btn" onclick="runGeo()">Lookup</button>
+    </div>
+  </div>
+  <div class="tq-info-grid" id="result"></div>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+    <h2>What Is IP Geolocation?</h2>
+    <p>IP geolocation maps an IP address to a real-world location. It identifies the country, region, city, ISP, and timezone of any public IP address using a combination of
+WHOIS data and geolocation databases.</p>
+    <h2>Use Cases</h2>
+    <p><strong>Security</strong> — Identify suspicious login locations. <strong>CDN routing</strong> — Serve content from the closest server. <strong>Compliance</strong> — Enforce geographic content restrictions. <strong>Analytics</strong> — Understand visitor
+geography.</p>
+  </div>
+</div>
+  <div class="seo-section">
+    <h2>Common Use Cases</h2>
+    <ul>
+      <li><strong>Fraud detection</strong> — flag logins or transactions originating from unexpected countries relative to a user's normal location.</li>
+      <li><strong>Content localization</strong> — determine a visitor's likely country to serve region-appropriate content or pricing.</li>
+      <li><strong>Network troubleshooting</strong> — confirm whether traffic is routing through an unexpected region, which can indicate a misconfigured CDN or VPN.</li>
+      <li><strong>Verifying VPN/proxy usage</strong> — check if an IP resolves to a known hosting/datacenter range rather than a residential ISP, a common VPN indicator.</li>
+    </ul>
+    <h2>Example</h2>
+    <p>Looking up an IP that resolves to a datacenter/hosting provider rather than a residential ISP is a strong signal the connection is coming through a VPN, proxy, or cloud server rather than a home or mobile connection.</p>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>How accurate is IP geolocation?</h3>
+      <p>Country-level accuracy is generally high. City-level accuracy varies and can be off by tens of kilometers, especially for mobile or ISP-shared IP ranges.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can IP geolocation identify a specific person?</h3>
+      <p>No. It identifies the approximate location of the ISP or network infrastructure serving that IP, not an individual or exact address.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why does the location seem wrong?</h3>
+      <p>This is common with mobile carriers, VPNs, and corporate networks, which often route traffic through infrastructure located far from the actual user.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is ASN in these results?</h3>
+      <p>The Autonomous System Number identifies the network/organization that owns the IP range, useful for identifying the ISP or hosting provider.</p>
+    </div>
+  </div>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How accurate is IP geolocation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Country-level accuracy is generally high. City-level accuracy varies and can be off by tens of kilometers, especially for mobile or ISP-shared IP ranges."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can IP geolocation identify a specific person?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. It identifies the approximate location of the ISP or network infrastructure serving that IP, not an individual or exact address."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the location seem wrong?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This is common with mobile carriers, VPNs, and corporate networks, which often route traffic through infrastructure located far from the actual user."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is ASN in these results?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Autonomous System Number identifies the network/organization that owns the IP range, useful for identifying the ISP or hosting provider."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:15px;margin-bottom:4px}
+
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+</style>
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached — resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+async function runGeo() {
+  const ip = document.getElementById('ip').value.trim();
+  if (!ip) return;
+  const btn = event.target; const r = document.getElementById('result');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Looking up';
+  r.innerHTML = '';
+  document.getElementById('ai-analyze-btn').style.display = 'none';
+  document.getElementById('ai-result-card').style.display = 'none';
+  const res = await fetch('/api/geo?ip=' + encodeURIComponent(ip));
+  const d = await res.json();
+  btn.disabled = false; btn.textContent = 'Lookup';
+  if (d.status === 'fail') { r.innerHTML = '<pre class="tq-result">Error: ' + d.message + '</pre>'; return; }
+  const fields = [['Country', d.country], ['Region', d.regionName], ['City', d.city], ['ISP', d.isp], ['ASN', d.as], ['Timezone', d.timezone], ['Latitude', d.lat], ['Longitude', d.lon]];
+  const visible = fields.filter(([,v]) => v);
+  r.innerHTML = visible.map(([l,v]) => `<div class="tq-info-card"><div class="tq-info-label">${l}</div><div class="tq-info-value neutral">${v}</div></div>`).join('');
+  const summary = visible.map(([l,v]) => l + ': ' + v).join('\n');
+  tqInitAIAnalyze({ tool: 'geo', target: ip, getOutput: () => summary });
+}
+</script>
+{{end}}

@@ -1,0 +1,178 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg></div>
+    <div><div class="tool-badge">Tool</div><h1 class="tq-title">Reverse DNS Lookup</h1><p class="tq-sub">Resolve an IP address back to its hostname using PTR records.</p></div>
+  </div>
+  <div class="tq-card">
+    <div class="tq-row">
+      <input class="tq-input" id="ip" placeholder="8.8.8.8"/>
+      <button class="tq-btn" onclick="runRDNS()">Lookup</button>
+    </div>
+  </div>
+  <pre class="tq-result" id="result" style="display:none"></pre>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+    <h2>What Is Reverse DNS?</h2>
+    <p>Reverse DNS resolves an IP address back to a domain name using PTR (pointer) records stored in the <code>in-addr.arpa</code> namespace. It is the inverse of a forward DNS lookup.</p>
+    <h2>Use Cases</h2>
+    <p><strong>Email deliverability</strong> — Mail servers verify PTR records to reduce spam. <strong>Security logging</strong> — Human-readable hostnames in server logs. <strong>Network investigation</strong> — Identify who owns an IP address.</p>
+  </div>
+</div>
+
+  <div class="seo-section">
+    <h2>Common Use Cases</h2>
+    <ul>
+      <li><strong>Email deliverability</strong> — confirm your mail server's IP has a matching PTR record, which many receiving servers require to accept mail.</li>
+      <li><strong>Server identification</strong> — identify the hostname behind an unfamiliar IP address seen in server logs.</li>
+      <li><strong>Abuse investigation</strong> — trace suspicious traffic back to its likely hosting provider or organization via its PTR record.</li>
+      <li><strong>Network documentation</strong> — verify that internal or external IP-to-hostname mappings match your infrastructure records.</li>
+    </ul>
+    <h2>Example</h2>
+    <p>An IP with no PTR record, or one that resolves to a generic hosting provider hostname instead of your mail server's actual domain, will cause many receiving mail servers to flag or reject your outgoing email as likely spam.</p>
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>What is a PTR record?</h3>
+      <p>A PTR (pointer) record maps an IP address back to a hostname — the reverse of a normal DNS lookup, which maps a hostname to an IP.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why does my mail server need a PTR record?</h3>
+      <p>Many mail providers check that the sending IP's PTR record matches or is related to the sending domain, as a basic anti-spam signal. Missing PTR records commonly cause deliverability issues.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can anyone set a PTR record?</h3>
+      <p>No — PTR records are controlled by whoever owns the IP address block, typically your hosting provider or ISP, not the domain owner directly.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why does the PTR hostname look unfamiliar?</h3>
+      <p>Cloud and VPS providers often assign generic PTR hostnames by default (e.g. based on the datacenter). You usually need to request a custom PTR record from your provider.</p>
+    </div>
+  </div>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a PTR record?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A PTR (pointer) record maps an IP address back to a hostname \u2014 the reverse of a normal DNS lookup, which maps a hostname to an IP."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my mail server need a PTR record?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Many mail providers check that the sending IP's PTR record matches or is related to the sending domain, as a basic anti-spam signal. Missing PTR records commonly cause deliverability issues."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can anyone set a PTR record?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No \u2014 PTR records are controlled by whoever owns the IP address block, typically your hosting provider or ISP, not the domain owner directly."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the PTR hostname look unfamiliar?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cloud and VPS providers often assign generic PTR hostnames by default (e.g. based on the datacenter). You usually need to request a custom PTR record from your provider."
+      }
+    }
+  ]
+}
+</script>
+
+<style>
+.faq-item{margin-bottom:16px}
+.faq-item h3{font-size:15px;margin-bottom:4px}
+
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+</style>
+
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached \u2014 resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+async function runRDNS() {
+  const ip = document.getElementById('ip').value.trim();
+  if (!ip) return;
+  const btn = event.target; const r = document.getElementById('result');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Looking up';
+  r.style.display = 'block'; document.getElementById('ai-analyze-btn').style.display='none'; document.getElementById('ai-result-card').style.display='none'; r.textContent = 'Looking up...';
+  const res = await fetch('/api/reverse-dns?ip=' + encodeURIComponent(ip));
+  const data = await res.json();
+  btn.disabled = false; btn.textContent = 'Lookup';
+  r.textContent = data.error ? 'Error: ' + data.error : (data.hostnames || []).join('\n') || 'No PTR record found';
+  tqInitAIAnalyze({ tool: 'reverse-dns', target: ip, getOutput: () => r.textContent });
+}
+</script>
+{{end}}

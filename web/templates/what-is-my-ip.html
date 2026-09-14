@@ -1,0 +1,148 @@
+{{define "content"}}
+<div class="container tool-page">
+  <a href="/tools" class="back-link"><svg viewBox="0 0 12 12"><path d="M8 2L4 6l4 4"/></svg> All tools</a>
+  <div class="tool-header">
+    <div class="tool-header-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M8 12h8M12 8v8"/></svg></div>
+    <div><div class="tool-badge">Tool</div><h1 class="tq-title">What Is My IP</h1><p class="tq-sub">Your public IP address, geolocation, ISP, and timezone.</p></div>
+  </div>
+  <div class="tq-card" style="text-align:center;padding:40px 32px">
+    <div style="font-family:'Geist Mono',monospace;font-size:0.65rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:12px">Your IP Address</div>
+    <div class="ip-display" id="ipDisplay">Detecting...</div>
+  </div>
+  <div class="tq-info-grid" id="infoGrid"></div>
+
+  <div class="ai-widget-wrap">
+    <button class="ai-analyze-btn" id="ai-analyze-btn" style="display:none">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+      Analyze with TraceQube AI
+    </button>
+    <div class="ai-result-card tq-card" id="ai-result-card" style="display:none"></div>
+  </div>
+
+  <div class="seo-section">
+    <h2>What Is My IP Address?</h2>
+    <p>Your IP address (Internet Protocol address) is a unique numerical label assigned to your device by your ISP. It identifies your device on the network and provides your approximate location to servers you visit.</p>
+    <h2>What Does My IP Reveal?</h2>
+    <p>Your public IP can reveal your approximate location (country, region, city), your Internet Service Provider, your Autonomous System Number (ASN), and your timezone. It does not reveal your exact address or personal details.</p>
+    <h2>Frequently Asked Questions</h2>
+    <p><strong>Does my IP change?</strong> Most residential ISPs assign dynamic IPs that change periodically. Businesses often use static IPs.</p>
+    <p><strong>Can websites see my IP?</strong> Yes — every website you visit can see your public IP. This is how responses are routed back to your device.</p>
+    <p><strong>How do I hide my IP?</strong> Use a VPN or proxy server to route traffic through a different IP address.</p>
+  </div>
+</div>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is my public IP the same as my device's IP?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Your device has a private/local IP (e.g. 192.168.x.x) used within your home network, while your public IP is what the internet sees, usually assigned by your ISP."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does my public IP change?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For most residential connections, yes \u2014 ISPs typically assign dynamic IPs that can change periodically or on router restart, unless you've paid for a static IP."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it safe to share my IP address?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your IP alone reveals only your approximate location and ISP \u2014 not personal identity. Still, avoid sharing it unnecessarily, especially alongside other identifying information."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my IP show as IPv6 sometimes and IPv4 other times?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Many networks support both protocols simultaneously (dual-stack), and which one is displayed depends on which protocol your device and our server negotiate for that particular connection."
+      }
+    }
+  ]
+}
+</script>
+<style>
+.ai-widget-wrap{margin:14px 0}
+.ai-analyze-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.ai-analyze-btn:hover{opacity:.9}
+.ai-analyze-btn:disabled{opacity:.6;cursor:default}
+.ai-analyze-btn .ai-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:ai-spin .6s linear infinite}
+@keyframes ai-spin{to{transform:rotate(360deg)}}
+.ai-result-card{margin-top:12px;border-radius:8px;padding:16px}
+.ai-result-header{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#6366f1;margin-bottom:8px}
+.ai-result-body{font-size:14px;line-height:1.6}
+.ai-remaining{margin-top:10px;font-size:12px;opacity:.6}
+.ai-error{font-size:14px;color:#dc2626}
+.ai-loading{font-size:14px;opacity:.6}
+</style>
+<script>
+function tqInitAIAnalyze(config) {
+  const { tool, target, getOutput } = config;
+  const btn = document.getElementById('ai-analyze-btn');
+  const card = document.getElementById('ai-result-card');
+  if (!btn || !card) return;
+  card.style.display = 'none';
+  card.innerHTML = '';
+  btn.style.display = 'inline-flex';
+  btn.disabled = false;
+  btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+  btn.onclick = async function() {
+    const output = getOutput();
+    if (!output) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="ai-spinner"></span> Analyzing...';
+    card.style.display = 'block';
+    card.innerHTML = '<p class="ai-loading">TraceQube AI is analyzing your results...</p>';
+    try {
+      const res = await fetch('/api/ai/analyze', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ tool: tool, target: target, output: output })
+      });
+      const data = await res.json();
+      if (!res.ok || data.error) {
+        card.innerHTML = '<p class="ai-error">' + (data.error || 'Analysis unavailable. Please try again later.') + '</p>';
+      } else {
+        const left = data.remaining;
+        const remainingText = (left > 0)
+          ? left + ' free ' + (left === 1 ? 'analysis' : 'analyses') + ' remaining today'
+          : 'Daily free limit reached — resets tomorrow';
+        card.innerHTML =
+          '<div class="ai-result-header">TraceQube AI Analysis</div>' +
+          '<div class="ai-result-body">' + String(data.analysis).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</div>' +
+          '<div class="ai-remaining">' + remainingText + '</div>';
+      }
+    } catch (e) {
+      card.innerHTML = '<p class="ai-error">Could not reach analysis service. Please try again.</p>';
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg> Analyze with TraceQube AI';
+    }
+  };
+}
+
+fetch('/api/ip')
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('ipDisplay').textContent = data.ip || 'Unknown';
+    const fields = [['Country', data.country], ['Region', data.regionName], ['City', data.city], ['Postal Code', data.zip], ['Timezone', data.timezone], ['ISP', data.isp], ['ASN', data.as]];
+    const grid = document.getElementById('infoGrid');
+    fields.forEach(([label, value]) => {
+      if (!value) return;
+      grid.innerHTML += `<div class="tq-info-card"><div class="tq-info-label">${label}</div><div class="tq-info-value neutral">${value}</div></div>`;
+    });
+    const summary = 'IP Address: ' + (data.ip || 'Unknown') + '\n' + fields.filter(([,v]) => v).map(([l,v]) => l + ': ' + v).join('\n');
+    tqInitAIAnalyze({ tool: 'ip', target: data.ip || 'unknown', getOutput: () => summary });
+  })
+  .catch(() => { document.getElementById('ipDisplay').textContent = 'Error'; });
+</script>
+{{end}}
